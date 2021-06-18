@@ -48,4 +48,4 @@ class EntityManager {
   }
 }
 
-export default EntityManager
+export default EntityManager;

@@ -1,6 +1,6 @@
 import {
     math
-} from '../../../utils/math.js';
+} from '@math';
 
 
 
