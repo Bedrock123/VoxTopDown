@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 
 class Entity {
@@ -7,6 +7,7 @@ class Entity {
     this._components = {};
 
     this._position = new THREE.Vector3();
+    this._rotation = new THREE.Quaternion();
     this._handlers = {};
     this._parent = null;
   }
@@ -65,7 +66,7 @@ class Entity {
       x,
       y,
       z
-    )
+    );
     
     // Set the entity to that vector 3
     this._position.copy(pos);
@@ -77,11 +78,19 @@ class Entity {
     });
   }
 
-  Update(timeElapsed) {
+  SetQuaternion(r) {
+    this._rotation.copy(r);
+    this.Broadcast({
+        topic: 'update.rotation',
+        value: this._rotation,
+    });
+  }
+
+  Update(deltaTime) {
     for (let k in this._components) {
-      this._components[k].Update(timeElapsed);
+      this._components[k].Update(deltaTime);
     }
   }
 };
 
-export default Entity
+export default Entity;

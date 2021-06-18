@@ -41,9 +41,9 @@ class EntityManager {
     this._entities.splice(i, 1);
   }
 
-  Update(timeElapsed) {
+  Update(deltaTime) {
     for (let e of this._entities) {
-      e.Update(timeElapsed);
+      e.Update(deltaTime);
     }
   }
 }
