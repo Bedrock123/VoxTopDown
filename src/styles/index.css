@@ -1,0 +1,24 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden !important;
+  background: red;
+}
+.info {
+color: #FFF;
+position: absolute;
+padding: 20px 0 0 20px;
+}
+
+button {
+  position: fixed;
+  z-index: 999;
+  top: 10px;
+  left: 10px;
+}
+.webgl {
+  top: 0px;
+  outline: none;
+  left:0px;
+  cursor: crosshair;
+}
