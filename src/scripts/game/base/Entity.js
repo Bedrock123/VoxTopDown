@@ -34,9 +34,9 @@ class Entity {
     this._parent.SetActive(this, b);
   }
 
-  AddComponent(c) {
+  AddComponent(c, name) {
     c.SetParent(this);
-    this._components[c.constructor.name] = c;
+    this._components[name] = c;
 
     c.InitComponent();
   }

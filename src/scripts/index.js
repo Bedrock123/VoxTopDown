@@ -42,8 +42,48 @@ class GameEngine extends GameEnviornment {
         const gridHelper = new THREE.GridHelper( size, divisions );
         gridHelper.position.y = -.5
         this._scene.add( gridHelper );
-
     }
+
+    SetScene() {
+      {
+          const player = new Entity();
+          player.AddComponent(new PlayerInput.Controller({
+              scene: this._scene,
+              inputManager: this._inputManager,
+              grid: this._grid,
+              camera: this._camera,
+              cameraControls: this._cameraControls,
+              parent: player,
+              scene: this._scene,
+              resourcePath: '/public/man/',
+              resourceName: "roboto12.gltf",
+              scale: 0.4,
+              emissive: new THREE.Color("white"),
+              specular: new THREE.Color("white"),
+              receiveShadow: true,
+              castShadow: true,
+          }), 'Controller');  
+          player.AddComponent( new SpacialGridControllerEntity.GridController({grid: this._grid}), 'GridController')
+          this._entityManager.Add(player, "Player");
+      }
+      
+      {
+          for (let i = 0; i < 100; ++i) {
+              const animalNPC = new Entity()
+              animalNPC.AddComponent(new AnimalEntity.StaticModelComponent({
+                  scene: this._scene,
+              }));
+              animalNPC.AddComponent( new SpacialGridControllerEntity.GridController({grid: this._grid}),'GridController' )
+              this._entityManager.Add(animalNPC)
+              animalNPC.SetPosition(
+                  (Math.random() * 200) - 100,
+                  0,
+                  (Math.random() * 200) - 100
+              )
+          }
+      }
+  }
+  
 }
 
 
@@ -51,6 +91,6 @@ class GameEngine extends GameEnviornment {
 const Game = new GameEngine()
 Game.Initialize()
 Game.Animate()
-// Game.SetScene()
+Game.SetScene()
 Game.SetGridHelper()
 
