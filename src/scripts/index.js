@@ -1,8 +1,11 @@
 import '../styles/index.css';
 
 import * as THREE from 'three'
+
+console.log("hi")
 import EntityManager from "./game/base/EntityManager"
 import Entity from "./game/base/Entity"
+
 
 import GameEnviornment from "./game/base/utils/GameEnviornment";
 import InputManager from "./game/base/utils/InputManager"
@@ -17,9 +20,11 @@ import Stats from "stats.js"
 
 import GenerateMap from "./utils/map/generate"
 
+console.log( PlayerEntity)
 
-// Dungeon system
-// Enemeyies like enter teh gungeon 
+
+// // Dungeon system
+// // Enemeyies like enter teh gungeon 
 
 
 class GameEngine extends GameEnviornment {
@@ -39,53 +44,13 @@ class GameEngine extends GameEnviornment {
         this._scene.add( gridHelper );
 
     }
-
-    SetScene() {
-        {
-            const player = new Entity();
-            player.AddComponent(new PlayerInput.Controller({
-                scene: this._scene,
-                inputManager: this._inputManager,
-                grid: this._grid,
-                camera: this._camera,
-                cameraControls: this._cameraControls,
-                parent: player,
-                scene: this._scene,
-                resourcePath: '/man/',
-                resourceName: "roboto12.gltf",
-                scale: 0.4,
-                emissive: new THREE.Color("white"),
-                specular: new THREE.Color("white"),
-                receiveShadow: true,
-                castShadow: true,
-            }));  
-            player.AddComponent( new SpacialGridControllerEntity.GridController({grid: this._grid}))
-            this._entityManager.Add(player, "Player");
-        }
-        
-        {
-            for (let i = 0; i < 100; ++i) {
-                const animalNPC = new Entity()
-                animalNPC.AddComponent(new AnimalEntity.StaticModelComponent({
-                    scene: this._scene,
-                }));
-                animalNPC.AddComponent( new SpacialGridControllerEntity.GridController({grid: this._grid}))
-                this._entityManager.Add(animalNPC)
-                animalNPC.SetPosition(
-                    (Math.random() * 200) - 100,
-                    0,
-                    (Math.random() * 200) - 100
-                )
-            }
-        }
-    }
 }
 
 
-// Create Game
+// // Create Game
 const Game = new GameEngine()
 Game.Initialize()
 Game.Animate()
-Game.SetScene()
+// Game.SetScene()
 Game.SetGridHelper()
 
