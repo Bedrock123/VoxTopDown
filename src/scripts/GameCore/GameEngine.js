@@ -1,9 +1,13 @@
 import * as THREE from 'three';
 
+// ECS
 import EntityManager from "@EntityComponentCore/EntityManager";
+
+// Game Core
 import GameEnviornment from "@GameCore/GameEnviornment";
 
-import Entity from "@EntityComponentCore/Entity";
+// Entities
+import { PlayerEntity } from "@GameCore/Entities/PlayerEntity";
 
 class GameEngine extends GameEnviornment {
     constructor()
@@ -20,10 +24,12 @@ class GameEngine extends GameEnviornment {
     }
 
     _LoadPlayer() {
-        const player = new Entity();
+        const player = PlayerEntity({
+            scene: this._scene, 
+            camera: this._camera,
+            renderer: this._renderer,
+        });   
         this._entityManager.Add(player, "Player");
-
-        console.log(this._entityManager);
     }
 
     _SetGridHelper() {
