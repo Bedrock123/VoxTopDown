@@ -28,8 +28,10 @@ export const PlayerEntity = (params) => {
       scene: params.scene
   }), "DebugCamera");
 
+  // Receives keyboard and mouse movement
   Player.AddComponent(new PlayerInput(), "PlayerInput");
 
+  // Interprets mouse and keyboard into player action
   Player.AddComponent(new PlayerController(), "PlayerController");
   
   // Set the player to ground level

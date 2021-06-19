@@ -7,7 +7,7 @@ class Entity {
     this._components = {};
 
     this._position = new THREE.Vector3();
-    this._rotation = new THREE.Quaternion();
+    this._rotation = new THREE.Euler();
     this._handlers = {};
     this._parent = null;
   }
@@ -78,7 +78,7 @@ class Entity {
     });
   }
 
-  SetQuaternion(r) {
+  SetRotation(r) {
     this._rotation.copy(r);
     this.Broadcast({
         topic: 'update.rotation',

@@ -29,11 +29,20 @@ export const ModelLoader = (() => {
             this._RegisterHandler('update.position', (m) => {
                 this._OnPosition(m);
             });
+            this._RegisterHandler('update.rotation', (m) => {
+                this._OnRotation(m);
+            });
         }
 
         _OnPosition(m) {
             if (this._target) {
                 this._target.position.copy(m.value);
+            }
+        }
+        
+        _OnRotation(m) {
+            if (this._target) {
+                this._target.rotation.copy(m.value);
             }
         }
 
@@ -125,7 +134,6 @@ export const ModelLoader = (() => {
         _OnPosition(m) {
             if (this._target) {
                 this._target.position.copy(m.value);
-                // this._target.position.y = 0.35;
             }
         }
 
