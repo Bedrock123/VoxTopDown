@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import globals from "@helpers/globals";
 
 // ECS
 import Component from '@EntityComponentCore/Component';
@@ -7,7 +8,8 @@ class PlayerController extends Component {
     constructor(params) {
         super();
         this._params = params;
-        
+        this._lastIntersectPoint = null;
+
         this._SetPlayerOrientationHelper();
     }
 
@@ -49,7 +51,7 @@ class PlayerController extends Component {
         // Set the player in motion and position
         if (keysPressed.left.pressed) {
             controlObject.SetPosition(
-                controlObject._position.x -= timeDelta * 16, 
+                controlObject._position.x -= timeDelta * globals.player.moveSpeed ,
                 controlObject._position.y, 
                 controlObject._position.z
             );
@@ -57,7 +59,7 @@ class PlayerController extends Component {
         }
         if (keysPressed.right.pressed) {
             controlObject.SetPosition(
-                controlObject._position.x += timeDelta * 16,
+                controlObject._position.x += timeDelta * globals.player.moveSpeed ,
                 controlObject._position.y, 
                 controlObject._position.z
             );
@@ -66,14 +68,14 @@ class PlayerController extends Component {
             controlObject.SetPosition(
                 controlObject._position.x,
                 controlObject._position.y, 
-                controlObject._position.z  -= timeDelta * 16 ,
+                controlObject._position.z  -= timeDelta * globals.player.moveSpeed ,
             );
         }
         if (keysPressed.down.pressed) {
                 controlObject.SetPosition(
                 controlObject._position.x, 
                 controlObject._position.y, 
-                controlObject._position.z += timeDelta * 16,
+                controlObject._position.z += timeDelta * globals.player.moveSpeed ,
             );
         }
         

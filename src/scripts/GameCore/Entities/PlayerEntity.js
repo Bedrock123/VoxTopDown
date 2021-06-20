@@ -8,6 +8,7 @@ import {ModelLoader} from "@GameCore/Components/Common/ModelLoader";
 
 // Player Components
 import DebugCamera from "@GameCore/Components/Player/DebugCamera";
+import TopDownCamera from "@GameCore/Components/Player/TopDownCamera";
 import PlayerInput from "@GameCore/Components/Player/PlayerInput";
 import PlayerController from "@GameCore/Components/Player/PlayerController";
 
@@ -22,11 +23,17 @@ export const PlayerEntity = (params) => {
       emissive: new THREE.Color(0x808080),
   }), "StaticModelComponent");
   
-  Player.AddComponent(new DebugCamera({
+  Player.AddComponent(new TopDownCamera({
       camera: params.camera,
       renderer: params.renderer,
       scene: params.scene
-  }), "DebugCamera");
+  }), "TopDownCamera");
+
+  // Player.AddComponent(new DebugCamera({
+  //     camera: params.camera,
+  //     renderer: params.renderer,
+  //     scene: params.scene
+  // }), "DebugCamera");
 
   // Receives keyboard and mouse movement
   Player.AddComponent(new PlayerInput({

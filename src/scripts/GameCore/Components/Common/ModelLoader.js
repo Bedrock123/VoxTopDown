@@ -5,10 +5,10 @@ import {
 import {
     FBXLoader
 } from 'three/examples/jsm/loaders/FBXLoader.js';
+import gsap from 'gsap';
 
 // ECS
 import Component from '@EntityComponentCore/Component';
-
 
 export const ModelLoader = (() => {
 
@@ -47,6 +47,7 @@ export const ModelLoader = (() => {
         _OnRotation(m) {
             if (this._target) {
                 this._target.rotation.copy(m.value);
+                // gsap.to(this._target.rotation, { duration: .5,  z: m.value.z, y: m.value.y,   x: m.value.x,  });
             }
         }
 
@@ -101,7 +102,7 @@ export const ModelLoader = (() => {
 
             // console.log(this._target.position)
             const box = new THREE.Box3().setFromObject( obj );
-            const center = box.getCenter();
+            const center = box.getCenter(obj.position);
 
             // Center the model based on the center point
             obj.position.set(-center.x, 0, -center.z);
