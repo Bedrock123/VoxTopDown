@@ -18,8 +18,8 @@ export const PlayerEntity = (params) => {
   Player.AddComponent(new ModelLoader.StaticModelComponent({
       scene: params.scene,
       resourcePath: '/public/man/',
-      resourceName: 'roboto12.gltf',
-      scale: .1,
+      resourceName: 'marine.gltf',
+      scale: .3,
       emissive: new THREE.Color("whitewwww"),
   }), "StaticModelComponent");
 

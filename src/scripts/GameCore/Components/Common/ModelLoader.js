@@ -47,7 +47,6 @@ export const ModelLoader = (() => {
         _OnRotation(m) {
             if (this._target) {
                 this._target.rotation.copy(m.value);
-                // gsap.to(this._target.rotation, { duration: .5,  z: m.value.z, y: m.value.y,   x: m.value.x,  });
             }
         }
 
