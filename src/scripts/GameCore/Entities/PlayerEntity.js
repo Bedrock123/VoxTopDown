@@ -20,9 +20,9 @@ export const PlayerEntity = (params) => {
       resourcePath: '/public/man/',
       resourceName: 'roboto12.gltf',
       scale: .1,
-      emissive: new THREE.Color(0x808080),
+      emissive: new THREE.Color("whitewwww"),
   }), "StaticModelComponent");
-  
+
   Player.AddComponent(new TopDownCamera({
       camera: params.camera,
       renderer: params.renderer,
@@ -42,7 +42,8 @@ export const PlayerEntity = (params) => {
 
   // Interprets mouse and keyboard into player action
   Player.AddComponent(new PlayerController({
-    scene: params.scene
+    scene: params.scene,
+      camera: params.camera,
   }), "PlayerController");
   
   // Set the player to ground level

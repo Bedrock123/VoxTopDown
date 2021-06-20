@@ -8,7 +8,7 @@ class PlayerController extends Component {
     constructor(params) {
         super();
         this._params = params;
-        this._lastIntersectPoint = null;
+        this._intersectPoint = null;
 
         this._SetPlayerOrientationHelper();
     }
@@ -32,6 +32,11 @@ class PlayerController extends Component {
 
         // Set the player helper as the component target
         this._target = playerOrientationHelper;
+
+        const aimHelper = new THREE.Mesh( new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({color: "red"}));
+        this._params.scene.add(aimHelper);
+        this._aimHelper = aimHelper;
+
     }
 
     Update(timeDelta) {
@@ -39,44 +44,45 @@ class PlayerController extends Component {
         // Get the input constants
         const input = this.GetComponent('PlayerInput');
         const keysPressed = input.keysPressed;
-        const intersectPoint = input.intersectPoint;
+        this._intersectPoint = input.intersectPoint;
         
         // Get the parent position and rotation
         const controlObject = this._parent;
 
-        // Set the oritation helper to look at the intersect point and then set the entity rotation to match it
-        this._target.lookAt(intersectPoint);
-        controlObject.SetRotation(this._target.rotation.x, this._target.rotation.y, this._target.rotation.z);
+        let xDelta = 0;
+        let zDelta = 0;
 
         // Set the player in motion and position
         if (keysPressed.left.pressed) {
-            controlObject.SetPosition(
-                controlObject._position.x -= timeDelta * globals.player.moveSpeed ,
-                controlObject._position.y, 
-                controlObject._position.z
-            );
+            xDelta = timeDelta * globals.player.moveSpeed * -1;
             
         }
         if (keysPressed.right.pressed) {
-            controlObject.SetPosition(
-                controlObject._position.x += timeDelta * globals.player.moveSpeed ,
-                controlObject._position.y, 
-                controlObject._position.z
-            );
+            xDelta = timeDelta * globals.player.moveSpeed;
         }
         if (keysPressed.up.pressed) {
-            controlObject.SetPosition(
-                controlObject._position.x,
-                controlObject._position.y, 
-                controlObject._position.z  -= timeDelta * globals.player.moveSpeed ,
-            );
+            zDelta = timeDelta * globals.player.moveSpeed  * - 1;
         }
         if (keysPressed.down.pressed) {
-                controlObject.SetPosition(
-                controlObject._position.x, 
+            zDelta = timeDelta * globals.player.moveSpeed;
+        }
+        
+        if (zDelta !== 0 || xDelta !== 0) {
+            controlObject.SetPosition(
+                controlObject._position.x += xDelta, 
                 controlObject._position.y, 
-                controlObject._position.z += timeDelta * globals.player.moveSpeed ,
+                controlObject._position.z += zDelta,
             );
+        }
+        // Set the oritation helper to look at the intersect point and then set the entity rotation to match it
+        if (this._intersectPoint) {
+            this._intersectPoint.x += xDelta;
+            this._intersectPoint.z += zDelta;
+            this._target.lookAt(this._intersectPoint);
+            controlObject.SetRotation(this._target.rotation.x, this._target.rotation.y, this._target.rotation.z);
+
+            this._aimHelper.position.set(this._intersectPoint.x, this._intersectPoint.y, this._intersectPoint.z);
+            // console.log(this._params.camera)
         }
         
     }

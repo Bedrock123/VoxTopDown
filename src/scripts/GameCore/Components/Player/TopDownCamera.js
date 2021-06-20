@@ -31,15 +31,15 @@ class TopDownCamera extends Component {
         this._cameraControls = new CameraControls( params.camera, params.renderer.domElement );
 
         this._cameraControls.distance = 40;
-        this._cameraControls.dampingFactor = .06;
+        this._cameraControls.dampingFactor = .09;
         this._cameraControls.draggingDampingFactor = .06;
         this._cameraControls.polarAngle = Math.PI / 7;
 
         // - Mouse Button Controls
-        this._cameraControls.mouseButtons.left = null;
-        this._cameraControls.mouseButtons.middle = null;
-        this._cameraControls.mouseButtons.right = null;
-        this._cameraControls.mouseButtons.wheel = null;
+        this._cameraControls.mouseButtons.left = CameraControls.ACTION.TRUCK;
+        this._cameraControls.mouseButtons.middle = CameraControls.ACTION.OFFSET;
+        this._cameraControls.mouseButtons.right = CameraControls.ACTION.ROTATE;
+        this._cameraControls.mouseButtons.wheel = CameraControls.ACTION.DOLLY;
 
     }
 
