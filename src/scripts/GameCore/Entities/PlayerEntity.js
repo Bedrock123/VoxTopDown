@@ -43,7 +43,7 @@ export const PlayerEntity = (params) => {
   // Interprets mouse and keyboard into player action
   Player.AddComponent(new PlayerController({
     scene: params.scene,
-      camera: params.camera,
+      camera: params.camera
   }), "PlayerController");
   
   // Set the player to ground level

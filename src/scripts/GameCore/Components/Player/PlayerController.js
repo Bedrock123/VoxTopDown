@@ -33,13 +33,16 @@ class PlayerController extends Component {
         // Set the player helper as the component target
         this._target = playerOrientationHelper;
 
-        const aimHelper = new THREE.Mesh( new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({color: "red"}));
-        this._params.scene.add(aimHelper);
-        this._aimHelper = aimHelper;
-
     }
 
     Update(timeDelta) {
+
+        const getPointInBetweenByPerc = (pointA, pointB, percentage) => {
+            let dir = pointB.clone().sub(pointA);
+            let len = dir.length();
+            dir = dir.normalize().multiplyScalar(len*percentage);
+            return pointA.clone().add(dir);
+        };
 
         // Get the input constants
         const input = this.GetComponent('PlayerInput');
@@ -49,13 +52,13 @@ class PlayerController extends Component {
         // Get the parent position and rotation
         const controlObject = this._parent;
 
+        // Define the changes to the characters x and z coordinates
         let xDelta = 0;
         let zDelta = 0;
 
         // Set the player in motion and position
         if (keysPressed.left.pressed) {
             xDelta = timeDelta * globals.player.moveSpeed * -1;
-            
         }
         if (keysPressed.right.pressed) {
             xDelta = timeDelta * globals.player.moveSpeed;
@@ -67,6 +70,7 @@ class PlayerController extends Component {
             zDelta = timeDelta * globals.player.moveSpeed;
         }
         
+        // If there is a change in the position, then update the entity position
         if (zDelta !== 0 || xDelta !== 0) {
             controlObject.SetPosition(
                 controlObject._position.x += xDelta, 
@@ -76,14 +80,30 @@ class PlayerController extends Component {
         }
         // Set the oritation helper to look at the intersect point and then set the entity rotation to match it
         if (this._intersectPoint) {
+            
+            // Change the mouse cursor intersect point by the change position
             this._intersectPoint.x += xDelta;
             this._intersectPoint.z += zDelta;
+            
+            // Set orientation helper to look at the intersect point
             this._target.lookAt(this._intersectPoint);
+
+
+            // Set the entity roation to the same as the orientation helper
             controlObject.SetRotation(this._target.rotation.x, this._target.rotation.y, this._target.rotation.z);
 
-            this._aimHelper.position.set(this._intersectPoint.x, this._intersectPoint.y, this._intersectPoint.z);
-            // console.log(this._params.camera)
+            
+            let lengthFactor = .7;
+            // Get the middle point between the entity position and the intersect point
+            const middlePoint = getPointInBetweenByPerc(this._intersectPoint, controlObject._position, lengthFactor);
+
+            // Access the topDown camera and set camera look at position to the center
+            const topDownCamera = this.GetComponent('TopDownCamera');
+            topDownCamera._cameraControls.moveTo(middlePoint.x, middlePoint.y, middlePoint.z, true);
+
         }
+
+
         
     }
 

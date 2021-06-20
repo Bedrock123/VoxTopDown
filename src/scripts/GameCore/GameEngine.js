@@ -27,7 +27,7 @@ class GameEngine extends GameEnviornment {
         const player = PlayerEntity({
             scene: this._scene, 
             camera: this._camera,
-            renderer: this._renderer,
+            renderer: this._renderer
         });   
         this._entityManager.Add(player, "Player");
     }
