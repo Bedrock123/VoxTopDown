@@ -78,8 +78,16 @@ class Entity {
     });
   }
 
-  SetRotation(r) {
-    this._rotation.copy(r);
+  SetRotation(x, y, z) {
+    // Create a new euler
+    const rotation = new THREE.Euler(
+      x,
+      y,
+      z
+    );
+
+    this._rotation.copy(rotation);
+    
     this.Broadcast({
         topic: 'update.rotation',
         value: this._rotation,

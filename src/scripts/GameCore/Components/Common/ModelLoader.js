@@ -36,7 +36,11 @@ export const ModelLoader = (() => {
 
         _OnPosition(m) {
             if (this._target) {
-                this._target.position.copy(m.value);
+                this._target.position.set(
+                    m.value.x,
+                    m.value.y,
+                    m.value.z 
+                );
             }
         }
         
@@ -55,11 +59,8 @@ export const ModelLoader = (() => {
         }
 
         _OnLoaded(obj) {
-            this._target = obj;
-            this._params.scene.add(this._target);
-
-            this._target.scale.setScalar(this._params.scale);
-            this._target.position.copy(this._parent._position);
+            obj.scale.setScalar(this._params.scale);
+            obj.position.multiplyScalar( - 1 );
 
             let texture = null;
             if (this._params.resourceTexture) {
@@ -68,7 +69,7 @@ export const ModelLoader = (() => {
                 texture.encoding = THREE.sRGBEncoding;
             }
 
-            this._target.traverse(c => {
+            obj.traverse(c => {
                 let materials = c.material;
                 if (!(c.material instanceof Array)) {
                     materials = [c.material];
@@ -97,6 +98,34 @@ export const ModelLoader = (() => {
                     c.visible = this._params.visible;
                 }
             });
+
+            // console.log(this._target.position)
+            const box = new THREE.Box3().setFromObject( obj );
+            const center = box.getCenter();
+
+            // Center the model based on the center point
+            obj.position.set(-center.x, 0, -center.z);
+
+            // Create a new pivot objecto be used as target
+            const pivot = new THREE.Object3D();
+
+            // Change the target to the pivot
+            this._target = pivot;
+
+            // Add the original object to the pivot
+            this._target.add(obj);
+    
+            // Add the model to the scene
+            this._params.scene.add(this._target);
+            
+            // After loading set the rotation and position again incase it missed it
+            this._target.position.set(
+                this._parent._position.x,
+                this._parent._position.y,
+                this._parent._position.z
+            );
+            this._target.rotation.copy(this._parent._rotation);
+
         }
 
         _LoadGLB() {

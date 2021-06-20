@@ -29,13 +29,18 @@ export const PlayerEntity = (params) => {
   }), "DebugCamera");
 
   // Receives keyboard and mouse movement
-  Player.AddComponent(new PlayerInput(), "PlayerInput");
+  Player.AddComponent(new PlayerInput({
+    camera: params.camera
+  }), "PlayerInput");
 
   // Interprets mouse and keyboard into player action
-  Player.AddComponent(new PlayerController(), "PlayerController");
+  Player.AddComponent(new PlayerController({
+    scene: params.scene
+  }), "PlayerController");
   
   // Set the player to ground level
-  Player.SetPosition(0, 4, 0);
+  Player.SetPosition(0, 4.5, 0);
+  Player.SetRotation(0, 0, 0);
 
   // Return the player
   return Player;

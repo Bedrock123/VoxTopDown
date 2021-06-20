@@ -33,8 +33,8 @@ class GameEngine extends GameEnviornment {
     }
 
     _SetGridHelper() {
-        const size = 50;
-        const divisions = 50;
+        const size = 500;
+        const divisions = 500;
         const gridHelper = new THREE.GridHelper( size, divisions );
         gridHelper.position.y = -.5;
         this._scene.add( gridHelper );
