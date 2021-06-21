@@ -7,6 +7,10 @@ class PlayerInput extends Component {
     constructor(params) {
         super();
         this.keysPressed = {};
+        this.mouseButtonsPressed = {
+            left: false,
+            right: false
+        };
         this.intersectPoint = new THREE.Vector3(0, 0, 0);
 
         // Load up te inital params
@@ -17,6 +21,9 @@ class PlayerInput extends Component {
 
         // Set up the mouse look up vector
         this._SetCursorPosition();
+
+        // Set up the mouse button window lisetener
+        this._SetMouseButtonMapping();
     }
 
     _SetCursorPosition() {
@@ -88,6 +95,19 @@ class PlayerInput extends Component {
         window.addEventListener('keyup', (e) => {
             setKeyFromKeyCode(e.keyCode, false);
         });
+    }
+
+    _SetMouseButtonMapping() {
+        let that = this;
+        const setButton = () => {
+            this.mouseButtonsPressed.right = true;
+            setTimeout(function(){ that.mouseButtonsPressed.right = false;  }, 500);
+        };
+        window.oncontextmenu = function ()
+        {
+            setButton();
+            return false;
+        };
     }
 }
 

@@ -17,11 +17,10 @@ export const PlayerEntity = (params) => {
 
   Player.AddComponent(new ModelLoader.StaticModelComponent({
       scene: params.scene,
-      resourcePath: '/public/man/',
-      resourceName: 'marine.gltf',
-      scale: .3,
-      emissive: new THREE.Color("whitewwww"),
-  }), "StaticModelComponent");
+      resourcePath: '/public/ybot/',
+      resourceName: 'ybot.fbx',
+      scale: .03,
+  }), "ModelComponent");
 
   Player.AddComponent(new TopDownCamera({
       camera: params.camera,

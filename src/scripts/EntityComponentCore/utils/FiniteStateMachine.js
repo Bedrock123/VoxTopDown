@@ -26,11 +26,11 @@ class FiniteStateMachine {
     state.Enter(prevState);
   }
 
-  Update(timeElapsed, input) {
+  Update(timeDelta, input) {
     if (this._currentState) {
-      this._currentState.Update(timeElapsed, input);
+      this._currentState.Update(timeDelta, input);
     }
   }
 };
 
-export default FiniteStateMachine
+export default FiniteStateMachine;
