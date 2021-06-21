@@ -12,13 +12,17 @@ class PlayerController extends Component {
         super();
         this._params = params;
         this._intersectPoint = null;
+        this._prevStateName = null;
+        this._dogeMovement = null;
         this._stateMachine = new PlayerFiniteStateMachine();
+        this._dogeRotationHelper = [];
+
         this._Init();
     }
 
     _Init() {
         // Set the player look helper
-        this._SetPlayerOrientationHelper();
+        this._SetPlayerOrientationHelpers();
 
         // Set the intial state
         this._stateMachine.SetState('idle');
@@ -36,13 +40,35 @@ class PlayerController extends Component {
         }
     }
 
-    _SetPlayerOrientationHelper() {
+    _SetPlayerOrientationHelpers() {
         // Helpers guide the player model orientation
         const playerOrientationHelper = new THREE.Mesh( new THREE.BoxGeometry(0, 0, 0), new THREE.MeshStandardMaterial());
         this._params.scene.add(playerOrientationHelper);
 
         // Set the player helper as the component target
         this._target = playerOrientationHelper;
+
+
+        // For precise doge rollwing set 8 helpers around the doge to for target to look at
+        const rotationHelperMesh = new THREE.MeshStandardMaterial({color: "red"});
+
+        const positions = [
+            [0, 0, -5],
+            [2.5, 0, -2.5],
+            [5, 0, 0],
+            [2.5, 0, 2.5],
+            [0, 0, 5],
+            [-2.5, 0, 2.5],
+            [-5, 0, 0],
+            [-2.5, 0, -2.5],
+        ];
+
+        positions.map((position) => {
+            const dogeRotationHelper = new THREE.Mesh( new THREE.BoxGeometry(0, 0, 0), rotationHelperMesh);
+            dogeRotationHelper.position.set(position[0], position[1], position[2],);
+            this._params.scene.add(dogeRotationHelper);
+            this._dogeRotationHelper.push(dogeRotationHelper);
+        });
 
     }
 
@@ -51,7 +77,7 @@ class PlayerController extends Component {
         let len = dir.length();
         dir = dir.normalize().multiplyScalar(len*percentage);
         return pointA.clone().add(dir);
-    };
+    }
 
     _UpdateStateMachineAndGetCurrentState(timeDelta, input, ) {
         // Update the player state machine to determine what state we are in
@@ -67,13 +93,91 @@ class PlayerController extends Component {
         }
         return this._stateMachine._currentState;
     }
+
+    _GetPlayerPositionChange(keysPressed, currentState, timeDelta) {
+        // Define the changes to the characters x and z coordinates
+        let xDelta = 0;
+        let zDelta = 0;
+
+        // Get the direction up or down 
+        let xDirection = null;
+        let yDirection = null;
+
+        let speed = globals.player.moveSpeed;
+        // Define the player speed based on state
+        if (currentState.Name === 'doge') {
+            speed = globals.player.dogeSpeed;
+        }
+
+        // Set the player in motion and position
+        if (keysPressed.left.pressed) {
+            xDelta = timeDelta * speed * -1;
+            xDirection = 'left';
+        }
+        if (keysPressed.right.pressed) {
+            xDelta = timeDelta * speed;
+            xDirection = 'right';
+        }
+        if (keysPressed.up.pressed) {
+            zDelta = timeDelta * speed  * - 1;
+            yDirection = 'up';
+        }
+        if (keysPressed.down.pressed) {
+            zDelta = timeDelta * speed;
+            yDirection = 'down';
+        }
+
+        // Get the directional doge rotation of the player 
+        let dogeRotationHelperToRotateTo = null;
+        if (yDirection && !xDirection) {
+            if (yDirection === 'up') {
+                dogeRotationHelperToRotateTo = 1;
+            } else {
+                dogeRotationHelperToRotateTo = 5;
+            }
+        } else if (xDirection && !yDirection) {
+            if (xDirection === 'right') {
+                dogeRotationHelperToRotateTo = 3;
+            } else {
+                dogeRotationHelperToRotateTo = 7;
+            }
+        } else if (
+            xDirection === "right" &&
+            yDirection === "up"
+        ) {
+            dogeRotationHelperToRotateTo = 2;
+        } else if (
+            xDirection === "right" &&
+            yDirection === "down"
+        ) {
+            dogeRotationHelperToRotateTo = 4;
+        } else if (
+            xDirection === "left" &&
+            yDirection === "up"
+        ) {
+            dogeRotationHelperToRotateTo = 8;
+        } else if (
+            xDirection === "left" &&
+            yDirection === "down"
+        ) {
+            dogeRotationHelperToRotateTo = 6;
+        }
+
+        return {
+            xDelta,
+            zDelta,
+            dogeRotationHelperToRotateTo
+        };
+    }
+
+
     Update(timeDelta) {
 
         // If there is no default player state then do nothing
         if (!this._stateMachine._currentState) {
             return;
         }
-    
+
         // Get the input constants
         const input = this.GetComponent('PlayerInput');
         const keysPressed = input.keysPressed;
@@ -85,30 +189,31 @@ class PlayerController extends Component {
         // Get the parent position and rotation
         const controlObject = this._parent;
 
-        // Define the changes to the characters x and z coordinates
-        let xDelta = 0;
-        let zDelta = 0;
+        // Get the player position change
+        let {xDelta, zDelta, dogeRotationHelperToRotateTo} = this._GetPlayerPositionChange(keysPressed, currentState, timeDelta);
 
-        let speed = globals.player.moveSpeed;
-        // Define the player speed based on state
-        if (currentState.Name === 'doge') {
-            speed = globals.player.dogeSpeed;
+        // If the player is doging save the last x z delta and run that for the frams instead of new key presses
+        if (this._prevStateName === "run") {
+            if (currentState.Name === "doge") {
+                this._dogeMovement = {xDelta, zDelta, dogeRotationHelperToRotateTo};
+            };
+        };
+
+        // If the player is done dogging then remove those last saved delta
+        if (this._prevStateName === "doge") {
+            if (currentState.Name !== "doge") {
+                this._dogeMovement = null;
+            };
+        };
+
+        // Set the previous state 
+        this._prevStateName = currentState.Name;
+
+        // If there is a saved doge xz delta then set the xz delta to that last direction
+        if (this._dogeMovement) {
+            xDelta = this._dogeMovement.xDelta;
+            zDelta = this._dogeMovement.zDelta;
         }
-        
-        // Set the player in motion and position
-        if (keysPressed.left.pressed) {
-            xDelta = timeDelta * speed * -1;
-        }
-        if (keysPressed.right.pressed) {
-            xDelta = timeDelta * speed;
-        }
-        if (keysPressed.up.pressed) {
-            zDelta = timeDelta * speed  * - 1;
-        }
-        if (keysPressed.down.pressed) {
-            zDelta = timeDelta * speed;
-        }
-        
 
         // If there is a change in the position, then update the entity position
         if (zDelta !== 0 || xDelta !== 0) {
@@ -118,33 +223,39 @@ class PlayerController extends Component {
                 controlObject._position.z += zDelta,
             );
         }
-        // Set the oritation helper to look at the intersect point and then set the entity rotation to match it
-        if (this._intersectPoint) {
-            
-            // Change the mouse cursor intersect point by the change position
-            this._intersectPoint.x += xDelta;
-            this._intersectPoint.z += zDelta;
-            
-            // Dont roate the player if they are doging
-            if (currentState.Name !== 'doge') {
+
+        // Change the mouse cursor intersect point by the change position
+        this._intersectPoint.x += xDelta;
+        this._intersectPoint.z += zDelta;
+        
+        // Dont roate the player if they are doging
+        if (currentState.Name !== 'doge') {
+            // Set orientation helper to look at the intersect point
+            this._target.lookAt(this._intersectPoint);
+            // Set the entity roation to the same as the orientation helper
+            controlObject.SetRotation(this._target.rotation.x, this._target.rotation.y, this._target.rotation.z);
+        }  
+        else {
+            if (this._dogeMovement.dogeRotationHelperToRotateTo) {
                 // Set orientation helper to look at the intersect point
-                this._target.lookAt(this._intersectPoint);
-    
+                this._target.lookAt(this._dogeRotationHelper[this._dogeMovement.dogeRotationHelperToRotateTo - 1].position);
                 // Set the entity roation to the same as the orientation helper
                 controlObject.SetRotation(this._target.rotation.x, this._target.rotation.y, this._target.rotation.z);
             }
-
-            let lengthFactor = .7;
-            // Get the middle point between the entity position and the intersect point
-            const middlePoint = this._GetPointInBetweenByPerc(this._intersectPoint, controlObject._position, lengthFactor);
-
-            // Access the topDown camera and set camera look at position to the center
-            const topDownCamera = this.GetComponent('TopDownCamera');
-            topDownCamera._cameraControls.moveTo(middlePoint.x, middlePoint.y, middlePoint.z, true);
-
         }
 
+        // Change up the doge roatio helper positions based on the movment          
+        this._dogeRotationHelper.map((rotationHelper) => {
+            rotationHelper.position.set(rotationHelper.position.x += xDelta , 0, rotationHelper.position.z += zDelta);
+        });
 
+        let lengthFactor = .7;
+        // Get the middle point between the entity position and the intersect point
+        const middlePoint = this._GetPointInBetweenByPerc(this._intersectPoint, controlObject._position, lengthFactor);
+
+        // Access the topDown camera and set camera look at position to the center
+        const topDownCamera = this.GetComponent('TopDownCamera');
+        topDownCamera._cameraControls.moveTo(middlePoint.x, middlePoint.y, middlePoint.z, true);
         
     }
 

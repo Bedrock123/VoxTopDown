@@ -55,7 +55,7 @@ export const PlayerStates = (() => {
 
         Exit() {}
 
-        Update(timeDelta, input) {
+        Update(_, input) {
             if (input.mouseButtonsPressed.right) {
                 this._parent.SetState('doge');
                 return;
@@ -91,7 +91,7 @@ export const PlayerStates = (() => {
         Exit() {
         }
 
-        Update(timeDelta, input) {
+        Update(_, input) {
             if (!input.mouseButtonsPressed.right) {
                 if (
                     input.keysPressed.up.pressed || 

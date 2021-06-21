@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import globals from "@helpers/globals";
 
 // ECS
 import Component from '@EntityComponentCore/Component';
@@ -98,15 +99,28 @@ class PlayerInput extends Component {
     }
 
     _SetMouseButtonMapping() {
-        let that = this;
-        const setButton = () => {
+        const setRightClickButton = () => {
             this.mouseButtonsPressed.right = true;
-            setTimeout(function(){ that.mouseButtonsPressed.right = false;  }, 500);
+            // set the right click for the deration of the doge roll so it canot be click again
+            setTimeout(function(){ this.mouseButtonsPressed.right = false;  }.bind(this), globals.player.dogeTime);
         };
+
+        // Check for the right mouse button click
         window.oncontextmenu = function ()
         {
-            setButton();
+            setRightClickButton();
             return false;
+        };
+
+        const setLeftClickButton = (clicked) => {
+            this.mouseButtonsPressed.left = clicked;
+        };
+
+        document.body.onmousedown = function() { 
+            setLeftClickButton(true);
+        };
+        document.body.onmouseup = function() {
+            setLeftClickButton(false);
         };
     }
 }
