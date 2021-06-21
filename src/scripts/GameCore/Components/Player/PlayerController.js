@@ -5,7 +5,8 @@ import globals from "@helpers/globals";
 import Component from '@EntityComponentCore/Component';
 
 // Player State
-import PlayerFiniteStateMachine from './State/PlayerFiniteStateMachine';
+import PlayerFiniteStateMachine from '@GameCore/Components/Player/State/PlayerFiniteStateMachine';
+import CharacterControllerProxy from '@GameCore/Components/Common/CharacterControllerProxy';
 
 class PlayerController extends Component {
     constructor(params) {
@@ -14,8 +15,10 @@ class PlayerController extends Component {
         this._intersectPoint = null;
         this._prevStateName = null;
         this._dogeMovement = null;
-        this._stateMachine = new PlayerFiniteStateMachine();
         this._dogeRotationHelper = [];
+        this._animations = {};
+        this._stateMachine = new PlayerFiniteStateMachine(new CharacterControllerProxy(this._animations));
+
 
         this._Init();
     }
@@ -24,8 +27,6 @@ class PlayerController extends Component {
         // Set the player look helper
         this._SetPlayerOrientationHelpers();
 
-        // Set the intial state
-        this._stateMachine.SetState('idle');
     }
 
     InitComponent() {

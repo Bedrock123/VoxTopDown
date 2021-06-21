@@ -3,11 +3,9 @@ import * as THREE from 'three';
 // ECS
 import Entity from "@EntityComponentCore/Entity";
 
-// Commmon Components
-import {ModelLoader} from "@GameCore/Components/Common/ModelLoader";
-
 // Player Components
 import DebugCamera from "@GameCore/Components/Player/DebugCamera";
+import PlayerModel from "@GameCore/Components/Player/PlayerModel";
 import TopDownCamera from "@GameCore/Components/Player/TopDownCamera";
 import PlayerInput from "@GameCore/Components/Player/PlayerInput";
 import PlayerController from "@GameCore/Components/Player/PlayerController";
@@ -15,12 +13,11 @@ import PlayerController from "@GameCore/Components/Player/PlayerController";
 export const PlayerEntity = (params) => {
   const Player = new Entity();
 
-  Player.AddComponent(new ModelLoader.StaticModelComponent({
+  Player.AddComponent(new PlayerModel({
       scene: params.scene,
       resourcePath: '/public/ybot/',
       resourceName: 'ybot.fbx',
-      scale: .03,
-  }), "ModelComponent");
+  }), "PlayerModel");
 
   Player.AddComponent(new TopDownCamera({
       camera: params.camera,
