@@ -52,9 +52,12 @@ class PlayerModel extends Component {
 
         this._mixer = new THREE.AnimationMixer(fbx);
 
+        // Indivdual animation loaders
         const _OnLoad = (animName, anim) => {
             const clip = anim.animations[0];
             const action = this._mixer.clipAction(clip);
+
+            // Set the player conoler animations to pass to the proxy to pass to the state machine
             const playerController = this.GetComponent('PlayerController');
             
             playerController._animations[animName] = {
@@ -65,10 +68,12 @@ class PlayerModel extends Component {
 
         this._manager = new THREE.LoadingManager();
         this._manager.onLoad = () => {
+            // ON all animatinos loaded set the idle state into the player state machine
             const playerController = this.GetComponent('PlayerController');
             playerController._stateMachine.SetState('idle');
         };
 
+        // Fetch and load all of the player animations
         const loader = new FBXLoader(this._manager);
         loader.setPath('/public/ybot/');
         loader.load('idle.fbx', (a) => { _OnLoad('idle', a); });

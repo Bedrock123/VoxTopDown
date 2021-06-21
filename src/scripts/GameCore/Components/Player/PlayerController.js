@@ -172,15 +172,12 @@ class PlayerController extends Component {
     }
 
 
-    Update(timeDelta) {
-
+    _HandleMovement(timeDelta, input) {
         // If there is no default player state then do nothing
         if (!this._stateMachine._currentState) {
             return;
         }
 
-        // Get the input constants
-        const input = this.GetComponent('PlayerInput');
         const keysPressed = input.keysPressed;
         this._intersectPoint = input.intersectPoint;
         
@@ -257,7 +254,33 @@ class PlayerController extends Component {
         // Access the topDown camera and set camera look at position to the center
         const topDownCamera = this.GetComponent('TopDownCamera');
         topDownCamera._cameraControls.moveTo(middlePoint.x, middlePoint.y, middlePoint.z, true);
+    }
+    
+    _HandleTriggerItem(_, input) {
+        // If they are not currently dogging as well
+        const triggerInventoryItem = input.mouseButtonsPressed.left && this._stateMachine._currentState.Name !== "doge";
         
+        // If they are shooting then broadcast shoot
+        // Pass in the player position and rotation to the item for actions
+        if (triggerInventoryItem) {
+            this.Broadcast({
+                topic: 'inventory.triggerItem',
+                playerPosition: this._parent._position,
+                playerRotation: this._parent._rotation
+            });
+        };
+
+    }
+
+    Update(timeDelta) {
+        // Get the input constants
+        const input = this.GetComponent('PlayerInput');
+
+        // Handle the player movememtn
+        this._HandleMovement(timeDelta, input);
+
+        // Handle hte player shooting
+        this._HandleTriggerItem(timeDelta, input);
     }
 
 }

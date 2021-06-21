@@ -116,11 +116,15 @@ class PlayerInput extends Component {
             this.mouseButtonsPressed.left = clicked;
         };
 
-        document.body.onmousedown = function() { 
-            setLeftClickButton(true);
+        document.body.onmousedown = function(event) { 
+            if (event.which === 1) {
+                setLeftClickButton(true);
+            }
         };
-        document.body.onmouseup = function() {
-            setLeftClickButton(false);
+        document.body.onmouseup = function(event) {
+            if (event.which === 1) {
+                setLeftClickButton(false);
+            }
         };
     }
 }

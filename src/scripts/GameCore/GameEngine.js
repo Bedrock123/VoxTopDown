@@ -8,6 +8,7 @@ import GameEnviornment from "@GameCore/GameEnviornment";
 
 // Entities
 import { PlayerEntity } from "@GameCore/Entities/PlayerEntity";
+import { GunEntity } from "@GameCore/Entities/GunEntity";
 
 class GameEngine extends GameEnviornment {
     constructor()
@@ -24,11 +25,21 @@ class GameEngine extends GameEnviornment {
     }
 
     _LoadPlayer() {
+
+        // Create the starting gun
+        const startingGun = GunEntity({
+            scene: this._scene, 
+        });
+        this._entityManager.Add(startingGun, "StartingGun");
+
+        // Create the player character
         const player = PlayerEntity({
             scene: this._scene, 
             camera: this._camera,
-            renderer: this._renderer
+            renderer: this._renderer,
+            startingGun: startingGun
         });   
+
         this._entityManager.Add(player, "Player");
     }
 
