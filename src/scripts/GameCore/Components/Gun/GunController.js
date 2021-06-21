@@ -9,7 +9,7 @@ class GunController extends Component {
         this._params = params;
         this._magazineSize = 5000;
         this._hitDamage = 1;
-        this._rateOfFire = 20; // millseconds per shot
+        this._rateOfFire = 1; // millseconds per shot
         this._firingAction = 'bullet';
 
         this._firing = false;
@@ -60,12 +60,13 @@ class GunController extends Component {
         const playerOrientationHelper = new THREE.Mesh( new THREE.SphereGeometry(.2, 32, 32), new THREE.MeshStandardMaterial({color: "blue"}));
 
         playerOrientationHelper.position.copy(m.playerPosition);
-playerOrientationHelper.position.y = 10;
+        playerOrientationHelper.position.y = 3.9;
         let position = m.playerRotation;
         const randomFactor = .3;
         position.y = position.y + ((Math.random() * randomFactor) - (randomFactor / 2));
         playerOrientationHelper.rotation.copy(m.playerRotation);
         this._params.scene.add(playerOrientationHelper);
+        playerOrientationHelper.translateZ(2.3);
         this._bullets.push(playerOrientationHelper);
     }
 

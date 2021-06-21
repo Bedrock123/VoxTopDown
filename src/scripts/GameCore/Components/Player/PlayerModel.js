@@ -50,6 +50,12 @@ class PlayerModel extends Component {
             }
         });
 
+        // Loop through the character model and add in the bones into the 
+        this._bones = {};
+        for (let b of fbx.children[1].skeleton.bones) {
+            this._bones[b.name] = b;
+        }
+
         this._mixer = new THREE.AnimationMixer(fbx);
 
         // Indivdual animation loaders
@@ -79,6 +85,7 @@ class PlayerModel extends Component {
         loader.load('idle.fbx', (a) => { _OnLoad('idle', a); });
         loader.load('run.fbx', (a) => { _OnLoad('run', a); });
         loader.load('doge.fbx', (a) => { _OnLoad('doge', a); });
+        loader.load('shoot.fbx', (a) => { _OnLoad('shoot', a); });
 
         // Append the model to the pivto to ensure te centering is correc
         const box = new THREE.Box3().setFromObject( fbx );
@@ -109,7 +116,8 @@ class PlayerModel extends Component {
 
         this.Broadcast({
             topic: 'load.character',
-            model: this._target,
+            bones: this._bones,
+            target: fbx
         });
     }
 

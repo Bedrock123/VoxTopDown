@@ -24,7 +24,7 @@ export const PlayerStates = (() => {
         }
 
         Enter(prevState) {
-            const idleAction = this._parent._proxy._animations['idle'].action;
+            const idleAction = this._parent._proxy._animations['shoot'].action;
             if (prevState) {
                 const prevAction = this._parent._proxy._animations[prevState.Name].action;
                 idleAction.time = 0.0;
@@ -33,6 +33,7 @@ export const PlayerStates = (() => {
                 idleAction.setEffectiveWeight(1.0);
                 idleAction.crossFadeFrom(prevAction, 0.25, true);
                 idleAction.play();
+
             } else {
                 idleAction.play();
             }
@@ -64,21 +65,14 @@ export const PlayerStates = (() => {
             const curAction = this._parent._proxy._animations['run'].action;
             if (prevState) {
                 const prevAction = this._parent._proxy._animations[prevState.Name].action;
-            
                 curAction.enabled = true;
-            
-                if (prevState.Name == 'walk') {
-                    const ratio = curAction.getClip().duration / prevAction.getClip().duration;
-                    curAction.time = prevAction.time * ratio;
-                } else {
-                    curAction.time = 0.0;
-                    curAction.setEffectiveTimeScale(1.0);
-                    curAction.setEffectiveWeight(1.0);
-                }
-            
+                curAction.time = 0.0;
+                curAction.setEffectiveTimeScale(1.0);
+                curAction.setEffectiveWeight(1.0);
                 curAction.crossFadeFrom(prevAction, 0.1, true);
                 curAction.play();
-                } else {
+
+            } else {
                 curAction.play();
             }
         }
