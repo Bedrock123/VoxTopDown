@@ -158,11 +158,19 @@ export const ModelLoader = (() => {
             this._RegisterHandler('update.position', (m) => {
                 this._OnPosition(m);
             });
+            this._RegisterHandler('update.rotation', (m) => {
+                this._OnRotation(m);
+            });
         }
 
         _OnPosition(m) {
             if (this._target) {
                 this._target.position.copy(m.value);
+            }
+        }
+        _OnRotation(m) {
+            if (this._target) {
+                this._target.rotation.copy(m.value);
             }
         }
 
@@ -182,7 +190,7 @@ export const ModelLoader = (() => {
 
         _OnLoaded(obj, animations) {
             this._target = obj;
-            this._params.scene.add(this._target);
+            // this._params.scene.add(this._target);
 
             this._target.scale.setScalar(this._params.scale);
             this._target.position.copy(this._parent._position);
@@ -245,6 +253,36 @@ export const ModelLoader = (() => {
             this._mixer = new THREE.AnimationMixer(this._target);
 
             this._parent._mesh = this._target;
+
+            let object = this._target;
+            // console.log(this._target.position)
+            const box = new THREE.Box3().setFromObject( object );
+            const center = box.getCenter(object.position);
+
+            // Center the model based on the center point
+            object.position.set(-center.x, 0, -center.z);
+
+            // Create a new pivot objecto be used as target
+            const pivot = new THREE.Object3D();
+
+            // Change the target to the pivot
+            this._target = pivot;
+
+            // Add the original object to the pivot
+            this._target.add(object);
+    
+            // Add the model to the scene
+            this._params.scene.add(this._target);
+            
+            // After loading set the rotation and position again incase it missed it
+            this._target.position.set(
+                this._parent._position.x,
+                this._parent._position.y,
+                this._parent._position.z
+            );
+            this._target.rotation.copy(this._parent._rotation);
+
+
             this.Broadcast({
                 topic: 'load.character',
                 model: this._target,
