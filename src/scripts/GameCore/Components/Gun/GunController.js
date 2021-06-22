@@ -50,7 +50,6 @@ class GunController extends Component {
                     this._firing = false;
                 }
             }
-
         }
 
     }

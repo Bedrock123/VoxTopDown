@@ -2,7 +2,7 @@
 import Component from '@EntityComponentCore/Component';
 
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
-class EquipWeaponManager extends Component {
+class EquipItemModelManager extends Component {
     constructor(params) {
         super();
         this._params = params;
@@ -12,23 +12,23 @@ class EquipWeaponManager extends Component {
 
     InitComponent() {
         this._RegisterHandler('load.character', (m) => this._OnCharacterLoaded(m));
-        this._RegisterHandler('inventory.equip', (m) => this._OnEquip(m));
+        this._RegisterHandler('inventory.equipItemModel', (m) => this._OnEquip(m));
     }
 
     get Name() {
         return this._name;
     }
-
+    
     _OnCharacterLoaded(msg) {
+        // When the character is loaded assign their bones to object
         this._bones = msg.bones;
+
+        // Attach the model to t ebones
         this._AttachTarget();
-        console.log(msg);
     }
 
     _AttachTarget() {
         if (this._bones && this._target) {
-            console.log(this._bones);
-            console.log(this._params.anchor);
             this._bones[this._params.anchor].add(this._target);
         }
     }
@@ -42,8 +42,8 @@ class EquipWeaponManager extends Component {
             this._UnloadModels();
         }
 
+        // Attach the model to the bones after the model is loaded
         this._name = msg.value;
-
         this._LoadModels(this._name, () => {
             this._AttachTarget();
         });
@@ -71,15 +71,10 @@ class EquipWeaponManager extends Component {
                 c.receiveShadow = true;
             });
 
+            // Attache target
             attachTarget();
-
-            this.Broadcast({
-                topic: 'load.weapon',
-                model: this._target,
-                bones: this._bones,
-            });
         });
     }
 };
 
-export default EquipWeaponManager;
+export default EquipItemModelManager;

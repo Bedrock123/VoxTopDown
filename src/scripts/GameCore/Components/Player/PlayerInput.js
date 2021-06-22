@@ -64,12 +64,13 @@ class PlayerInput extends Component {
         // Set the keys into the pressed state or not
         const setKey = (keyName, pressed) => {
             const keyState = this.keysPressed[keyName];
+            keyState.justPressed = pressed && !keyState.pressed;
             keyState.pressed = pressed;
         };
         
         // Add a key to even listeer
         const addKey = (keyCode, name) => {
-            this.keysPressed[name] = { pressed: false };
+            this.keysPressed[name] = { pressed: false, justPressed: false };
             keyMap.set(keyCode, name);
         };
         
@@ -127,6 +128,8 @@ class PlayerInput extends Component {
             }
         };
     }
+
+
 }
 
 export default PlayerInput;

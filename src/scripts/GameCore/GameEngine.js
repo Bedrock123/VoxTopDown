@@ -27,17 +27,28 @@ class GameEngine extends GameEnviornment {
     _LoadPlayer() {
 
         // Create the starting gun
-        const startingGun = GunEntity({
+        const subMachineGun = GunEntity({
             scene: this._scene, 
+            gunPath: "PeaShooter.fbx"
         });
-        this._entityManager.Add(startingGun, "StartingGun");
+        this._entityManager.Add(subMachineGun, "subMachineGun");
+
+        // Create the starting gun
+        const sniperRifle = GunEntity({
+            scene: this._scene, 
+            gunPath: "LongRifle.fbx"
+        });
+        this._entityManager.Add(sniperRifle, "sniperRifle");
+
 
         // Create the player character
         const player = PlayerEntity({
             scene: this._scene, 
             camera: this._camera,
             renderer: this._renderer,
-            startingGun: startingGun
+            startingGun1: subMachineGun,
+            startingGun2: sniperRifle,
+
         });   
 
         this._entityManager.Add(player, "Player");

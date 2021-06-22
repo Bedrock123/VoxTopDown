@@ -7,7 +7,7 @@ import TopDownCamera from "@GameCore/Components/Player/TopDownCamera";
 import DebugCamera from "@GameCore/Components/Player/DebugCamera";
 import PlayerInput from "@GameCore/Components/Player/PlayerInput";
 import PlayerController from "@GameCore/Components/Player/PlayerController";
-import EquipWeaponManager from "@GameCore/Components/Player/EquipWeaponManager";
+import EquipItemModelManager from "@GameCore/Components/Player/EquipItemModelManager";
 
 // Inventory Components
 import InventoryController from "@GameCore/Components/Inventory/InventoryController";
@@ -16,9 +16,9 @@ export const PlayerEntity = (params) => {
   const Player = new Entity();
 
   // Add in Equip weapon model manager
-  Player.AddComponent(new EquipWeaponManager({
+  Player.AddComponent(new EquipItemModelManager({
     anchor: 'mixamorigRightHandIndex1'
-  }), "EquipWeaponManager");
+  }), "EquipItemModelManager");
 
     
   Player.AddComponent(new PlayerModel({
@@ -27,7 +27,7 @@ export const PlayerEntity = (params) => {
       resourceName: 'ybot.fbx',
   }), "PlayerModel");
 
-  Player.AddComponent(new DebugCamera({
+  Player.AddComponent(new TopDownCamera({
       camera: params.camera,
       renderer: params.renderer,
       scene: params.scene
@@ -51,21 +51,22 @@ export const PlayerEntity = (params) => {
   // Handle initial player inventory
   Player.AddComponent(new InventoryController(), "InventoryController");
 
-  // Get the starting gun from the player
-  // The startng gun is passed in through the platform
-  Player.Broadcast({
-    topic: 'inventory.add',
-    value: params.startingGun,
-  });  
+  if (params.startingGun1) {
+    // Get the starting gun from the player
+    // The startng gun is passed in through the platform
+    Player.Broadcast({
+      topic: 'inventory.add',
+      value: params.startingGun1,
+      equip: true
+    });  
+  }
 
-  // Equip the model to the player
-  Player.Broadcast({
-      topic: 'inventory.equip',
-      value: 'PeaShooter.fbx',
-      added: false,
-  });
-
-
+  if (params.startingGun2) {
+    Player.Broadcast({
+      topic: 'inventory.add',
+      value: params.startingGun2,
+    });  
+  }
 
   // Return the player
   return Player;

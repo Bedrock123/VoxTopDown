@@ -10,7 +10,7 @@ export const GunEntity = (params) => {
   const Gun = new Entity();
 
   // Controls the bullet flows
-  Gun.AddComponent(new GunController({scene: params.scene}), "GunController");
+  Gun.AddComponent(new GunController({scene: params.scene, gunPath: params.gunPath}), "GunController");
 
   // Return the Gun
   return Gun;

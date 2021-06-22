@@ -258,18 +258,32 @@ class PlayerController extends Component {
     
     _HandleTriggerItem(_, input) {
         // If they are not currently dogging as well
-        const triggerInventoryItem = input.mouseButtonsPressed.left && this._stateMachine._currentState.Name !== "doge";
-        
-        // If they are shooting then broadcast shoot
-        // Pass in the player position and rotation to the item for actions
-        if (triggerInventoryItem) {
-            this.Broadcast({
-                topic: 'inventory.triggerItem',
-                playerPosition: this._parent._position,
-                playerRotation: this._parent._rotation
-            });
-        };
+        if (this._stateMachine._currentState) {
+            const triggerInventoryItem = input.mouseButtonsPressed.left && this._stateMachine._currentState.Name !== "doge";
+            
+            // If they are shooting then broadcast shoot
+            // Pass in the player position and rotation to the item for actions
+            if (triggerInventoryItem) {
+                this.Broadcast({
+                    topic: 'inventory.triggerItem',
+                    playerPosition: this._parent._position,
+                    playerRotation: this._parent._rotation
+                });
+            };
+        }
+    }
 
+    _HandleInventoryChange(_, input) {
+        const changeInventoryItem = input.keysPressed.space;
+
+        // Change the weapon on a set interval if it is pressed
+        if (changeInventoryItem.justPressed) {
+            // Change the just pressed key back to false
+            input.keysPressed.space.justPressed = false;
+            this.Broadcast({
+                topic: 'inventory.swapItem',
+            });
+        }
     }
 
     Update(timeDelta) {
@@ -281,6 +295,9 @@ class PlayerController extends Component {
 
         // Handle hte player shooting
         this._HandleTriggerItem(timeDelta, input);
+
+        // Handle weapon changes
+        this._HandleInventoryChange(timeDelta, input);
     }
 
 }
