@@ -2,17 +2,24 @@
 import Component from '@EntityComponentCore/Component';
 
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+
+import gsap from 'gsap';
+
+
 class EquipItemModelManager extends Component {
     constructor(params) {
         super();
         this._params = params;
         this._target = null;
         this._name = null;
+
+        this._triggered = false;
     }
 
     InitComponent() {
         this._RegisterHandler('load.character', (m) => this._OnCharacterLoaded(m));
         this._RegisterHandler('inventory.equipItemModel', (m) => this._OnEquip(m));
+        this._RegisterHandler('gun.shoot', (m) => this._OnItemShoot(m));
     }
 
     get Name() {
@@ -74,6 +81,12 @@ class EquipItemModelManager extends Component {
             // Attache target
             attachTarget();
         });
+    }
+
+    _OnItemShoot(m) {
+
+    
+        
     }
 };
 

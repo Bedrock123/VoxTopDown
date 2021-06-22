@@ -82,9 +82,9 @@ class PlayerModel extends Component {
         // Fetch and load all of the player animations
         const loader = new FBXLoader(this._manager);
         loader.setPath('/public/voxel/');
-        loader.load('shoot.fbx', (a) => { _OnLoad('idle', a); });
+        loader.load('idle.fbx', (a) => { _OnLoad('idle', a); });
         loader.load('run.fbx', (a) => { _OnLoad('run', a); });
-        loader.load('doge.fbx', (a) => { _OnLoad('doge', a); });
+        loader.load('jump.fbx', (a) => { _OnLoad('doge', a); });
         loader.load('shoot.fbx', (a) => { _OnLoad('shoot', a); });
 
         // Append the model to the pivto to ensure te centering is correc

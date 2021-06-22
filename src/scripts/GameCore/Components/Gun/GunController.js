@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 import Component from '@EntityComponentCore/Component';
 import globals from "@helpers/globals";
 
@@ -8,46 +6,52 @@ class GunController extends Component {
     constructor(params)
     {
         super();
-        this._params = params;
-        this._gunDetails = params.gunDetails;
+        this._params = params; // used only to add to scene
+        this._gunDetails = params.gunDetails; // global gun details dict pass through
+        this._owner = null; // the player or AI entithy that owns this guns
 
-        this._firing = false;
-        this._lastShot = null;
-
-        this._bullets = [];
-
-        this._currentMagSize = this._gunDetails.magazineCapacity;
+        this._lastShot = null; // the time stamp of the last shot
+        this._bulletsLeftInMagazine = this._gunDetails.magazineCapacity; // the relative current mag size
     }
 
     InitComponent() {
-        // when the gun is fired
+        // Listen for then the player entity triggers the item
         this._RegisterHandler('item.trigger', (m) => this._OnTrigger(m));
     }
 
     _OnTrigger(m) {
 
         // If the gun is current in a firing state
-        if ( this._currentMagSize > 0 || globals.debug) {
-            // If there is not last shot then fire gun
-            if (!this._lastShot) {
-                this._lastShot = new Date();
-                this._currentMagSize -= 1;
-                this._Shoot(m);
-            } else {
-                var t1 = this._lastShot;
-                var t2 = new Date();
-                var dif = t1.getTime() - t2.getTime();
-                
-                var Seconds_from_T1_to_T2 = dif / 1000;
-                var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
-                
+        // If they have bullets left in the magainze
+        if ( this._bulletsLeftInMagazine > 0 || globals.debug) {
 
-                if (Seconds_Between_Dates >= (this._gunDetails.rateOfFire / 1000)) {
+            // If this is their first time shooting
+            if (!this._lastShot) {
+
+                // Set the last shot to now
+                this._lastShot = new Date();
+
+                // Reduce the bullets in mag
+                this._bulletsLeftInMagazine -= 1;
+
+                // Shoot the gun
+                this._Shoot(m);
+
+            } else {
+                // If the playuer has fired before then check the last time they fired and if they can based on teh fire rate
+                const  now = new Date();
+                const  difference = this._lastShot.getTime() - now.getTime();
+                let  secondsSinceLastShot = difference / 1000;
+                secondsSinceLastShot = Math.abs(secondsSinceLastShot);
+                if (secondsSinceLastShot >= (this._gunDetails.rateOfFire / 1000)) {
+                    // Set the last shot to now
                     this._lastShot = new Date();
-                    this._currentMagSize -= 1;
+
+                    // Reduce the bullets left in magainze
+                    this._bulletsLeftInMagazine -= 1;
+
+                    // Fire the gun
                     this._Shoot(m);
-                } else {
-                    this._firing = false;
                 }
             }
         }
@@ -55,25 +59,18 @@ class GunController extends Component {
     }
 
     _Shoot(m) {
-        // Helpers guide the player model orientation
-        const playerOrientationHelper = new THREE.Mesh( new THREE.SphereGeometry(.2, 32, 32), new THREE.MeshLambertMaterial({color: this._gunDetails.bulletColor, emissive: this._gunDetails.bulletColor, emissiveIntensity: 3}));
-
-        playerOrientationHelper.position.copy(m.playerPosition);
-        playerOrientationHelper.position.y = 3.9;
-        let position = m.playerRotation;
-        const randomFactor =  1 - this._gunDetails.accuracy;
-        position.y = position.y + ((Math.random() * randomFactor) - (randomFactor / 2));
-        playerOrientationHelper.rotation.copy(m.playerRotation);
-        this._params.scene.add(playerOrientationHelper);
-        playerOrientationHelper.translateZ(2.3);
-        this._bullets.push(playerOrientationHelper);
-    }
-
-    Update(timeDelta) {
-    
-        this._bullets.map((bullet) => {
-            bullet.translateZ(this._gunDetails.bulletSpeed * timeDelta);
+        // Send to the gun entity that we should shoot the gun
+        this.Broadcast({
+            topic: 'gun.shoot',
+            playerPosition: m.playerPosition,
+            playerRotation: m.playerRotation
         });
+
+        // Send to the gun owner that it is shot to edit
+        this._owner.Broadcast({
+            topic: 'gun.shoot'
+        });
+        
     }
 
 }

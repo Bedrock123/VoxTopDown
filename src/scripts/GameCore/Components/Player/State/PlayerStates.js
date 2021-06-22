@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 
-
 export const PlayerStates = (() => {
 
     class State {
@@ -117,7 +116,8 @@ export const PlayerStates = (() => {
                 this._action.reset();  
                 this._action.setLoop(THREE.LoopOnce, 1);
                 this._action.clampWhenFinished = true;
-                this._action.crossFadeFrom(prevAction, 0.2, true);
+                this._action.crossFadeFrom(prevAction, 0.01, true);
+                this._action.setEffectiveTimeScale(1);
                 this._action.play();
             } else {
                 this._action.play();

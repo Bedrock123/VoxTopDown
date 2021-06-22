@@ -5,7 +5,6 @@ import {
 import {
     FBXLoader
 } from 'three/examples/jsm/loaders/FBXLoader.js';
-import gsap from 'gsap';
 
 // ECS
 import Component from '@EntityComponentCore/Component';

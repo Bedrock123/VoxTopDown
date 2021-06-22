@@ -25,6 +25,9 @@ class InventoryController extends Component {
         // Add the gun entity into the player inventory
         this._inventory.push(msg.value);
         
+        // Add the holder to the gunController
+        msg.value.GetComponent("GunController")._owner = this._parent;
+
         // If the added item should be equipred
         if (msg.equip) {
             this._EquipItem(msg.value);
@@ -35,10 +38,13 @@ class InventoryController extends Component {
         // Equip the gun into the player inventory
         this._equippedInventoryItem = (item);
 
+        // Get the gun controler details
+        const gunDetails = item.GetComponent("GunController")._gunDetails;
+
         // Equip the model to the player
         this.Broadcast({
             topic: 'inventory.equipItemModel',
-            value: item.GetComponent("GunController")._gunDetails.modelPath,
+            value: gunDetails.modelPath,
             added: false,
         });
     }
