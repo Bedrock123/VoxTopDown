@@ -9,6 +9,9 @@ import PlayerInput from "@GameCore/Components/Player/PlayerInput";
 import PlayerController from "@GameCore/Components/Player/PlayerController";
 import EquipItemModelManager from "@GameCore/Components/Player/EquipItemModelManager";
 
+// Common
+import GridController from "@GameCore/Components/Common/GridController";
+
 // Inventory Components
 import InventoryController from "@GameCore/Components/Inventory/InventoryController";
 
@@ -20,6 +23,10 @@ export const PlayerEntity = (params) => {
     anchor: 'mixamorigRightHandIndex1'
   }), "EquipItemModelManager");
 
+  // Add in the grid controller
+  Player.AddComponent( new GridController({
+    grid: params.grid
+  }), "GridController");
     
   Player.AddComponent(new PlayerModel({
       scene: params.scene,

@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+
+
 import Component from '@EntityComponentCore/Component';
 import globals from "@helpers/globals";
 
@@ -17,7 +20,13 @@ class GunController extends Component {
     InitComponent() {
         // Listen for then the player entity triggers the item
         this._RegisterHandler('item.trigger', (m) => this._OnTrigger(m));
-    }
+
+        // Helpers guide the player model orientation
+        const playerOrientationHelper = new THREE.Mesh( new THREE.BoxGeometry(1, 20, 1, 32, 32, 32), new THREE.MeshStandardMaterial({color: "red"}));
+        this._params.scene.add(playerOrientationHelper);
+        this._box = playerOrientationHelper;
+
+}
 
     _OnTrigger(m) {
 
@@ -63,7 +72,8 @@ class GunController extends Component {
         this.Broadcast({
             topic: 'gun.shoot',
             playerPosition: m.playerPosition,
-            playerRotation: m.playerRotation
+            playerRotation: m.playerRotation,
+            box: this._box
         });
 
         // Send to the gun owner that it is shot to edit

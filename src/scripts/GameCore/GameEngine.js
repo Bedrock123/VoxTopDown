@@ -11,11 +11,15 @@ import Guns from "@GameCore/Items/Guns";
 import { PlayerEntity } from "@GameCore/Entities/PlayerEntity";
 import { GunEntity } from "@GameCore/Entities/GunEntity";
 
+// ECS
+import SpacialHashGrid from "@EntityComponentCore/utils/SpacialHashGrid";
+
 class GameEngine extends GameEnviornment {
     constructor()
     {
         super();
         this._entityManager = new EntityManager();
+        this._grid = new SpacialHashGrid([[-2500, -2500], [2500, 2500]], [5000, 5000]);
     }
 
     Init() {
@@ -49,6 +53,7 @@ class GameEngine extends GameEnviornment {
             renderer: this._renderer,
             startingGun1: subMachineGun,
             startingGun2: sniperRifle,
+            grid: this._grid
 
         });   
 

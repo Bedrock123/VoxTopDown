@@ -1,6 +1,6 @@
 import {
     math
-} from '@math';
+} from '@helpers/math';
 
 
 
@@ -57,7 +57,6 @@ export default class SpacialHashGrid {
         }
         this.Remove(client);
         this._Insert(client);
-        // this._PrintClientPositions()
     }
 
     FindNear(position, bounds) {
@@ -89,23 +88,23 @@ export default class SpacialHashGrid {
     }
 
     _PrintClientPositions() {
-        console.clear()
-        let spaceDic = {}
-        let rowCount = 0
-        let columnCount = 0
+        console.clear();
+        let spaceDic = {};
+        let rowCount = 0;
+        let columnCount = 0;
         this._cells.map(function(row) {
-            columnCount = 0
+            columnCount = 0;
             row.map(function(point) {
                 if (point) {
-                    let position = String(rowCount) + ", " + String(columnCount)
-                    spaceDic[position] = point.client.entity._name
+                    let position = String(rowCount) + ", " + String(columnCount);
+                    spaceDic[position] = point.client.entity._name;
                 }
-                columnCount += 1
+                columnCount += 1;
                 return point;
-            })    
-            rowCount += 1
+            });    
+            rowCount += 1;
             return row;
-        })
+        });
         console.log(JSON.stringify(spaceDic, 0, 2));
     }
 

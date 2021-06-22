@@ -10,7 +10,7 @@ export const GunEntity = (params) => {
   const Gun = new Entity();
 
   // Controls the gun logic
-  Gun.AddComponent(new GunController({gunDetails: params.gunDetails}), "GunController");
+  Gun.AddComponent(new GunController({scene: params.scene, gunDetails: params.gunDetails}), "GunController");
 
   // Controls the procetile logic
   Gun.AddComponent(new ProjectileController({scene: params.scene, gunDetails: params.gunDetails}), "ProjectileController");

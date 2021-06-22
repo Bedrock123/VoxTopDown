@@ -19,8 +19,12 @@ class ProjectileController extends Component {
 
 
     _Shoot(m) {
+        if (!this.box) {
+            this.box = m.box;
+        }
+
         // Helpers guide the player model orientation
-        const playerOrientationHelper = new THREE.Mesh( new THREE.SphereGeometry(.2, 32, 32), new THREE.MeshLambertMaterial({color: this._gunDetails.bulletColor, emissive: this._gunDetails.bulletColor, emissiveIntensity: 3}));
+        const playerOrientationHelper = new THREE.Mesh( new THREE.SphereGeometry(.5, 32, 32), new THREE.MeshLambertMaterial({color: this._gunDetails.bulletColor, emissive: this._gunDetails.bulletColor, emissiveIntensity: 3}));
 
         
 
@@ -37,9 +41,27 @@ class ProjectileController extends Component {
     }
 
     Update(timeDelta) {
+        let colliision = false;
         this._bullets.map((bullet) => {
             bullet.translateZ(this._gunDetails.bulletSpeed * timeDelta);
+            var bulletBB = new THREE.Box3().setFromObject(bullet);
+            // bulletBB.expandByScalar(1s)
+            var enemyBB = new THREE.Box3().setFromObject(this.box);
+
+
+            var bulletCollision = bulletBB.intersectsBox(enemyBB);
+            if(bulletCollision){
+                colliision = true;
+            }
+
         });
+
+        if (colliision) {
+            this._bullets.map((bullet) => {
+                this._params.scene.remove(bullet);
+            });
+            this._bullets = [];
+        }
     }
 
 }

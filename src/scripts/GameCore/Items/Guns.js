@@ -7,7 +7,7 @@ const Guns = {
         modelPath: "PeaShooter.fbx",
         rateOfFire: 1,
         damage: 1,
-        bulletColor: 'red',
+        bulletColor: 'green',
         action: 'bullet',
         accuracy: .9,
         bulletSpeed: 30,
