@@ -38,7 +38,7 @@ class InventoryController extends Component {
         // Equip the model to the player
         this.Broadcast({
             topic: 'inventory.equipItemModel',
-            value: item.GetComponent("GunController")._params.gunPath,
+            value: item.GetComponent("GunController")._gunDetails.modelPath,
             added: false,
         });
     }

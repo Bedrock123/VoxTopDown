@@ -5,6 +5,7 @@ import EntityManager from "@EntityComponentCore/EntityManager";
 
 // Game Core
 import GameEnviornment from "@GameCore/GameEnviornment";
+import Guns from "@GameCore/Items/Guns";
 
 // Entities
 import { PlayerEntity } from "@GameCore/Entities/PlayerEntity";
@@ -29,14 +30,14 @@ class GameEngine extends GameEnviornment {
         // Create the starting gun
         const subMachineGun = GunEntity({
             scene: this._scene, 
-            gunPath: "PeaShooter.fbx"
+            gunDetails: Guns.AK47
         });
         this._entityManager.Add(subMachineGun, "subMachineGun");
 
         // Create the starting gun
         const sniperRifle = GunEntity({
             scene: this._scene, 
-            gunPath: "LongRifle.fbx"
+            gunDetails: Guns.longRifle
         });
         this._entityManager.Add(sniperRifle, "sniperRifle");
 

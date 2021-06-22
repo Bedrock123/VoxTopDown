@@ -1,5 +1,7 @@
 import * as THREE from 'three';
+
 import Component from '@EntityComponentCore/Component';
+import globals from "@helpers/globals";
 
 // Entity that conrolls the guns stats and firing.
 class GunController extends Component {
@@ -7,17 +9,14 @@ class GunController extends Component {
     {
         super();
         this._params = params;
-        this._magazineSize = 5000;
-        this._hitDamage = 1;
-        this._rateOfFire = 1; // millseconds per shot
-        this._firingAction = 'bullet';
+        this._gunDetails = params.gunDetails;
 
         this._firing = false;
         this._lastShot = null;
 
         this._bullets = [];
 
-        this._currentMagSize = this._magazineSize;
+        this._currentMagSize = this._gunDetails.magazineCapacity;
     }
 
     InitComponent() {
@@ -26,8 +25,9 @@ class GunController extends Component {
     }
 
     _OnShoot(m) {
+
         // If the gun is current in a firing state
-        if ( this._currentMagSize > 0) {
+        if ( this._currentMagSize > 0 || globals.debug) {
             // If there is not last shot then fire gun
             if (!this._lastShot) {
                 this._lastShot = new Date();
@@ -42,7 +42,7 @@ class GunController extends Component {
                 var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
                 
 
-                if (Seconds_Between_Dates >= (this._rateOfFire / 1000)) {
+                if (Seconds_Between_Dates >= (this._gunDetails.rateOfFire / 1000)) {
                     this._lastShot = new Date();
                     this._currentMagSize -= 1;
                     this._fireBullet(m);
@@ -56,12 +56,12 @@ class GunController extends Component {
 
     _fireBullet(m) {
         // Helpers guide the player model orientation
-        const playerOrientationHelper = new THREE.Mesh( new THREE.SphereGeometry(.2, 32, 32), new THREE.MeshStandardMaterial({color: "blue"}));
+        const playerOrientationHelper = new THREE.Mesh( new THREE.SphereGeometry(.2, 32, 32), new THREE.MeshStandardMaterial({color: this._gunDetails.bulletColor}));
 
         playerOrientationHelper.position.copy(m.playerPosition);
         playerOrientationHelper.position.y = 3.9;
         let position = m.playerRotation;
-        const randomFactor = .3;
+        const randomFactor =  1 - this._gunDetails.accuracy;
         position.y = position.y + ((Math.random() * randomFactor) - (randomFactor / 2));
         playerOrientationHelper.rotation.copy(m.playerRotation);
         this._params.scene.add(playerOrientationHelper);
@@ -71,8 +71,8 @@ class GunController extends Component {
 
     Update(timeDelta) {
     
-        this._bullets.map(function(bullet) {
-            bullet.translateZ(30 * timeDelta);
+        this._bullets.map((bullet) => {
+            bullet.translateZ(this._gunDetails.bulletSpeed * timeDelta);
         });
     }
 
