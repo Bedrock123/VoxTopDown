@@ -32,11 +32,11 @@ const Guns = {
         maxAmmoCapacity: 500,
         magazineCapacity: 50,
         modelPath: "AK47.fbx",
-        rateOfFire: 20,
+        rateOfFire: 1,
         damage: 10,
         bulletColor: 'purple',
         action: 'bullet',
-        accuracy: .7,
+        accuracy: .1,
         bulletSpeed: 30,
         force: 1,
         reloadTime: 200

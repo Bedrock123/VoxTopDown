@@ -61,9 +61,9 @@ class EquipItemModelManager extends Component {
         loader.setPath('/public/guns/');
         loader.load(item, (fbx) => {
             this._target = fbx;
-            this._target.scale.setScalar(.2);
+            this._target.scale.setScalar(.007);
             this._target.rotateY(- Math.PI * 2.9 );
-            this._target.rotateX(-Math.PI / 2.2);
+            this._target.rotateX(-Math.PI / 3.2);
             this._target.rotateY(-1);
 
             this._target.traverse(c => {

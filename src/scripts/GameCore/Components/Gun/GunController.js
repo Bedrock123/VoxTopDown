@@ -21,10 +21,10 @@ class GunController extends Component {
 
     InitComponent() {
         // when the gun is fired
-        this._RegisterHandler('item.trigger', (m) => this._OnShoot(m));
+        this._RegisterHandler('item.trigger', (m) => this._OnTrigger(m));
     }
 
-    _OnShoot(m) {
+    _OnTrigger(m) {
 
         // If the gun is current in a firing state
         if ( this._currentMagSize > 0 || globals.debug) {
@@ -32,7 +32,7 @@ class GunController extends Component {
             if (!this._lastShot) {
                 this._lastShot = new Date();
                 this._currentMagSize -= 1;
-                this._fireBullet(m);
+                this._Shoot(m);
             } else {
                 var t1 = this._lastShot;
                 var t2 = new Date();
@@ -45,7 +45,7 @@ class GunController extends Component {
                 if (Seconds_Between_Dates >= (this._gunDetails.rateOfFire / 1000)) {
                     this._lastShot = new Date();
                     this._currentMagSize -= 1;
-                    this._fireBullet(m);
+                    this._Shoot(m);
                 } else {
                     this._firing = false;
                 }
@@ -54,9 +54,9 @@ class GunController extends Component {
 
     }
 
-    _fireBullet(m) {
+    _Shoot(m) {
         // Helpers guide the player model orientation
-        const playerOrientationHelper = new THREE.Mesh( new THREE.SphereGeometry(.2, 32, 32), new THREE.MeshStandardMaterial({color: this._gunDetails.bulletColor}));
+        const playerOrientationHelper = new THREE.Mesh( new THREE.SphereGeometry(.2, 32, 32), new THREE.MeshLambertMaterial({color: this._gunDetails.bulletColor, emissive: this._gunDetails.bulletColor, emissiveIntensity: 3}));
 
         playerOrientationHelper.position.copy(m.playerPosition);
         playerOrientationHelper.position.y = 3.9;

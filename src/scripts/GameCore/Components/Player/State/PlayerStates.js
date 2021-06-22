@@ -24,7 +24,7 @@ export const PlayerStates = (() => {
         }
 
         Enter(prevState) {
-            const idleAction = this._parent._proxy._animations['shoot'].action;
+            const idleAction = this._parent._proxy._animations['idle'].action;
             if (prevState) {
                 const prevAction = this._parent._proxy._animations[prevState.Name].action;
                 idleAction.time = 0.0;

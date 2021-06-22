@@ -39,7 +39,7 @@ class PlayerModel extends Component {
 
 
     _OnLoaded(fbx) {
-        fbx.scale.setScalar(.03);
+        fbx.scale.setScalar(1.03);
 
 
         fbx.traverse(c => {
@@ -52,7 +52,7 @@ class PlayerModel extends Component {
 
         // Loop through the character model and add in the bones into the 
         this._bones = {};
-        for (let b of fbx.children[1].skeleton.bones) {
+        for (let b of fbx.children[0].skeleton.bones) {
             this._bones[b.name] = b;
         }
 
@@ -81,8 +81,8 @@ class PlayerModel extends Component {
 
         // Fetch and load all of the player animations
         const loader = new FBXLoader(this._manager);
-        loader.setPath('/public/ybot/');
-        loader.load('idle.fbx', (a) => { _OnLoad('idle', a); });
+        loader.setPath('/public/voxel/');
+        loader.load('shoot.fbx', (a) => { _OnLoad('idle', a); });
         loader.load('run.fbx', (a) => { _OnLoad('run', a); });
         loader.load('doge.fbx', (a) => { _OnLoad('doge', a); });
         loader.load('shoot.fbx', (a) => { _OnLoad('shoot', a); });
@@ -124,8 +124,8 @@ class PlayerModel extends Component {
 
     _LoadFBX() {
         const loader = new FBXLoader();
-        loader.setPath('/public/ybot/');
-        loader.load('ybot.fbx', (fbx) => {
+        loader.setPath('/public/voxel/');
+        loader.load('model.fbx', (fbx) => {
             this._OnLoaded(fbx);
         });
     }
