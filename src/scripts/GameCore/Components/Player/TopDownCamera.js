@@ -21,7 +21,7 @@ class TopDownCamera extends Component {
         this._cameraControls = new CameraControls( params.camera, params.renderer.domElement );
 
         const dampining = .04;
-        this._cameraControls.distance = 40;
+        this._cameraControls.distance = 30;
         this._cameraControls.dampingFactor = dampining;
         this._cameraControls.draggingDampingFactor = dampining;
         this._cameraControls.azimuthRotateSpeed = .3;
