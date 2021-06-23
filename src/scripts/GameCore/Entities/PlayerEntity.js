@@ -8,6 +8,7 @@ import DebugCamera from "@GameCore/Components/Player/DebugCamera";
 import PlayerInput from "@GameCore/Components/Player/PlayerInput";
 import PlayerController from "@GameCore/Components/Player/PlayerController";
 import EquipItemModelManager from "@GameCore/Components/Player/EquipItemModelManager";
+import HitBox from "@GameCore/Components/Common/HitBox";
 
 // Common
 import GridController from "@GameCore/Components/Common/GridController";
@@ -51,12 +52,25 @@ export const PlayerEntity = (params) => {
       camera: params.camera
   }), "PlayerController");
 
+  // Handles the player hit box
+  Player.AddComponent(new HitBox({
+    scene: params.scene,
+    size: {
+      x: 2,
+      y: 8,
+      z: 2
+    },
+    zOffset: 1
+  }), "HitBox");
+
   // Set the player to ground level
   Player.SetPosition(0, 0, 0);
   Player.SetRotation(0, 0, 0);
 
   // Handle initial player inventory
   Player.AddComponent(new InventoryController(), "InventoryController");
+
+
 
   if (params.startingGun1) {
     // Get the starting gun from the player

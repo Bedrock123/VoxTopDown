@@ -7,10 +7,10 @@ const Guns = {
         modelPath: "PeaShooter.fbx",
         rateOfFire: 1,
         damage: 1,
-        bulletColor: 'green',
+        bulletColor: 'black',
         action: 'bullet',
-        accuracy: .9,
-        bulletSpeed: 30,
+        accuracy: .74,
+        bulletSpeed: 40,
         force: 1,
         reloadTime: 200
 
@@ -19,7 +19,7 @@ const Guns = {
         maxAmmoCapacity: 500,
         magazineCapacity: 50,
         modelPath: "LongRifle.fbx",
-        rateOfFire: 1000,
+        rateOfFire: 300,
         damage: 10,
         bulletColor: 'blue',
         action: 'bullet',
@@ -37,7 +37,7 @@ const Guns = {
         bulletColor: 'purple',
         action: 'bullet',
         accuracy: .1,
-        bulletSpeed: 30,
+        bulletSpeed: 1,
         force: 1,
         reloadTime: 200
     },

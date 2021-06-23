@@ -3,7 +3,7 @@ import Entity from "@EntityComponentCore/Entity";
 
 // Gun Components
 import GunController from "@GameCore/Components/Gun/GunController";
-import ProjectileController from "@GameCore/Components/Gun/ProjectileController";
+import ProjectileGenerator from "@GameCore/Components/Gun/ProjectileGenerator";
 
 export const GunEntity = (params) => {
   // Create the gun entity
@@ -13,7 +13,7 @@ export const GunEntity = (params) => {
   Gun.AddComponent(new GunController({scene: params.scene, gunDetails: params.gunDetails}), "GunController");
 
   // Controls the procetile logic
-  Gun.AddComponent(new ProjectileController({scene: params.scene, gunDetails: params.gunDetails}), "ProjectileController");
+  Gun.AddComponent(new ProjectileGenerator({scene: params.scene, gunDetails: params.gunDetails}), "ProjectileGenerator");
 
   // Return the Gun
   return Gun;

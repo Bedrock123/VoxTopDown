@@ -10,6 +10,8 @@ import Guns from "@GameCore/Items/Guns";
 // Entities
 import { PlayerEntity } from "@GameCore/Entities/PlayerEntity";
 import { GunEntity } from "@GameCore/Entities/GunEntity";
+import { ProjectileMapEntity } from "@GameCore/Entities/ProjectileMapEntity";
+import { NPCEntity } from "@GameCore/Entities/NPCEntity";
 
 // ECS
 import SpacialHashGrid from "@EntityComponentCore/utils/SpacialHashGrid";
@@ -54,10 +56,22 @@ class GameEngine extends GameEnviornment {
             startingGun1: subMachineGun,
             startingGun2: sniperRifle,
             grid: this._grid
-
         });   
 
         this._entityManager.Add(player, "Player");
+
+        // Create the projectile map entity
+        const projectileMap = ProjectileMapEntity({
+            scene: this._scene
+        });   
+
+        this._entityManager.Add(projectileMap, "ProjectileMap");
+        
+        // Create the npc character
+        const npc = NPCEntity({
+            scene: this._scene
+        });   
+        this._entityManager.Add(npc, "NPC");
     }
 
     _SetGridHelper() {

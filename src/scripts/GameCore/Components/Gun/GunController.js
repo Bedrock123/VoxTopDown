@@ -21,12 +21,8 @@ class GunController extends Component {
         // Listen for then the player entity triggers the item
         this._RegisterHandler('item.trigger', (m) => this._OnTrigger(m));
 
-        // Helpers guide the player model orientation
-        const playerOrientationHelper = new THREE.Mesh( new THREE.BoxGeometry(1, 20, 1, 32, 32, 32), new THREE.MeshStandardMaterial({color: "red"}));
-        this._params.scene.add(playerOrientationHelper);
-        this._box = playerOrientationHelper;
+    }
 
-}
 
     _OnTrigger(m) {
 
@@ -71,15 +67,16 @@ class GunController extends Component {
         // Send to the gun entity that we should shoot the gun
         this.Broadcast({
             topic: 'gun.shoot',
-            playerPosition: m.playerPosition,
-            playerRotation: m.playerRotation,
-            box: this._box
+            startingPosition: m.playerPosition,
+            startingRotation: m.playerRotation,
+            owner: this._owner.Name,
+            damage: this._gunDetails.damage
         });
 
-        // Send to the gun owner that it is shot to edit
-        this._owner.Broadcast({
-            topic: 'gun.shoot'
-        });
+        // // Send to the gun owner that it is shot to edit
+        // this._owner.Broadcast({
+        //     topic: 'gun.shoot'
+        // });
         
     }
 
