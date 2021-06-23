@@ -36,7 +36,7 @@ class GameEngine extends GameEnviornment {
         // Create the starting gun
         const subMachineGun = GunEntity({
             scene: this._scene, 
-            gunDetails: Guns.peaShooter
+            gunDetails: Guns.AK47
         });
         this._entityManager.Add(subMachineGun, "subMachineGun");
 

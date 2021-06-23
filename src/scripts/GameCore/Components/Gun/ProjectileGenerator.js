@@ -59,7 +59,10 @@ class ProjectileGenerator extends Component {
             model: projectile,
             speed: this._gunDetails.bulletSpeed,
             owner: m.owner,
-            damage: m.damage
+            damage: m.damage,
+            maxRange: this._gunDetails.bulletRange,
+            distanceTraveled: 0
+            
         });
     
         

@@ -1,6 +1,3 @@
-import * as THREE from 'three';
-
-
 import Component from '@EntityComponentCore/Component';
 import globals from "@helpers/globals";
 

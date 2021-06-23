@@ -9,6 +9,7 @@ class HitBox extends Component {
         super();
         this._params = params;
         this._target = null;
+        this._box3D = null; // Used to track against projectile hits
 
         this._Init();
     }
@@ -22,6 +23,13 @@ class HitBox extends Component {
         });
     }
 
+    // Generate a new box 3d on move or rotate
+    _GenerateBox3D() {
+        const box3D =  new THREE.Box3().setFromObject(this._target);
+        this._box3D = box3D;
+
+    }
+
     _OnPosition(m) {
         if (this._target) {
             this._target.position.set(
@@ -29,13 +37,21 @@ class HitBox extends Component {
                 m.value.y,
                 m.value.z 
             );
+            // Generate the box 3D model
+            this._GenerateBox3D();
         }
     }
     
     _OnRotation(m) {
         if (this._target) {
             this._target.rotation.copy(m.value);
+            // Generate the box 3D model
+            // this._GenerateBox3D();
         }
+    }
+
+    get Box3D() {
+        return this._box3D;
     }
 
     _Init() {

@@ -10,9 +10,10 @@ const Guns = {
         bulletColor: 'black',
         action: 'bullet',
         accuracy: .74,
-        bulletSpeed: 40,
+        bulletSpeed: 100,
         force: 1,
-        reloadTime: 200
+        reloadTime: 200,
+        bulletRange: 5
 
     },
     longRifle: {
@@ -26,7 +27,8 @@ const Guns = {
         accuracy: 1,
         bulletSpeed: 100,
         force: 1,
-        reloadTime: 200
+        reloadTime: 200,
+        bulletRange: 5
     },
     AK47: {
         maxAmmoCapacity: 500,
@@ -37,9 +39,10 @@ const Guns = {
         bulletColor: 'purple',
         action: 'bullet',
         accuracy: .1,
-        bulletSpeed: 1,
+        bulletSpeed: 5,
         force: 1,
-        reloadTime: 200
+        reloadTime: 200,
+        bulletRange: 200
     },
 };
 
