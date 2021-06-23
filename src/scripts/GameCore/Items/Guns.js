@@ -5,15 +5,15 @@ const Guns = {
         maxAmmoCapacity: 500,
         magazineCapacity: 50,
         modelPath: "PeaShooter.fbx",
-        rateOfFire: 1,
+        rateOfFire: 20,
         damage: 1,
         bulletColor: 'black',
         action: 'bullet',
-        accuracy: .74,
-        bulletSpeed: 100,
+        accuracy: 1,
+        bulletSpeed: 30,
         force: 1,
         reloadTime: 200,
-        bulletRange: 5
+        bulletRange: 50
 
     },
     longRifle: {
@@ -28,7 +28,7 @@ const Guns = {
         bulletSpeed: 100,
         force: 1,
         reloadTime: 200,
-        bulletRange: 5
+        bulletRange: 140
     },
     AK47: {
         maxAmmoCapacity: 500,
@@ -38,8 +38,8 @@ const Guns = {
         damage: 10,
         bulletColor: 'purple',
         action: 'bullet',
-        accuracy: .1,
-        bulletSpeed: 5,
+        accuracy: .8,
+        bulletSpeed: 40,
         force: 1,
         reloadTime: 200,
         bulletRange: 200

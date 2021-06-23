@@ -20,10 +20,21 @@ class ProjectileController extends Component {
 
 
     Update(timeDelta) {
-        // Define the list of hitboxes to check form
-        let hitBoxesToCheck = [
-            this.FindEntity("NPC").GetComponent("HitBox").Box3D
-        ];
+        let hitBoxesToCheck;
+        if (this._mappedProjectiles.length > 0) {
+            // Define the list of hitboxes to check form
+            hitBoxesToCheck = [
+                {
+                    entity: this.FindEntity("NPC").GetComponent("HitBox"),
+                    owner: "NPC"
+                },
+                {
+                    entity: this.FindEntity("Player").GetComponent("HitBox"),
+                    owner: "Player"
+                },
+    
+            ];
+        }
 
         // Loop through the projectiles fired
         this._mappedProjectiles.forEach((projectileObject, index) => {
@@ -46,10 +57,38 @@ class ProjectileController extends Component {
                 const projectileBox3D = new THREE.Box3().setFromObject(projectileObject.model);
     
                 // Loop through the hit boxes and check if its a good hit
-                hitBoxesToCheck.map(function(hitBox) {
+                hitBoxesToCheck.map(function(hitBoxToCheck) {
                     // If there was not already a collision with another hitbox on the hiearchy, stop checking
-                    if (projectileBox3D.intersectsBox(hitBox) && !removeProjectile) {
-                        removeProjectile = true;
+                    if (projectileBox3D.intersectsBox(hitBoxToCheck.entity.Box3D) && !removeProjectile) {
+                        
+                        // If the projectile hit something that did not come from it
+                        if (projectileObject.owner !== hitBoxToCheck.owner) {
+
+                            // If the hit entity is a player then check to see if they are dogging or not
+                            if (hitBoxToCheck.owner === "Player") {
+                                if (hitBoxToCheck.entity.GetComponent("PlayerController").PlayerState !== "doge") {
+                                    // Mark the projectile to tbe rmeoved
+                                    removeProjectile = true;
+                                
+                                    // Broadcast the damage
+                                    hitBoxToCheck.entity.Broadcast({
+                                        topic: 'health.damage',
+                                        damage: projectileObject.damage,
+                                    });
+                                }
+
+                            // All else just remove the projectile and broadcast damage
+                            } else {
+                                // Mark the projectile to tbe rmeoved
+                                removeProjectile = true;
+                            
+                                // Broadcast the damage
+                                hitBoxToCheck.entity.Broadcast({
+                                    topic: 'health.damage',
+                                    damage: projectileObject.damage,
+                                });
+                            }
+                        }
                     }
                 });
             }

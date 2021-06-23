@@ -12,6 +12,7 @@ import HitBox from "@GameCore/Components/Common/HitBox";
 
 // Common
 import GridController from "@GameCore/Components/Common/GridController";
+import Health from "@GameCore/Components/Common/Health";
 
 // Inventory Components
 import InventoryController from "@GameCore/Components/Inventory/InventoryController";
@@ -70,6 +71,11 @@ export const PlayerEntity = (params) => {
   // Handle initial player inventory
   Player.AddComponent(new InventoryController(), "InventoryController");
 
+  // Add health to the player
+  Player.AddComponent(new Health({
+      health: 100,
+      maxHealth: 100,
+  }), "Health");
 
 
   if (params.startingGun1) {

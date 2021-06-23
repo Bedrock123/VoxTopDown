@@ -95,6 +95,10 @@ class PlayerController extends Component {
         return this._stateMachine._currentState;
     }
 
+    get PlayerState() {
+        return this._stateMachine._currentState.Name;
+    }
+
     _GetPlayerPositionChange(keysPressed, currentState, timeDelta) {
         // Define the changes to the characters x and z coordinates
         let xDelta = 0;

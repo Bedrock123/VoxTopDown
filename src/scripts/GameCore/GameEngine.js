@@ -46,6 +46,13 @@ class GameEngine extends GameEnviornment {
             gunDetails: Guns.longRifle
         });
         this._entityManager.Add(sniperRifle, "sniperRifle");
+    
+        // Create the npc gun
+        const peaShooter = GunEntity({
+            scene: this._scene, 
+            gunDetails: Guns.peaShooter
+        });
+        this._entityManager.Add(peaShooter, "peaShooter");
 
 
         // Create the player character
@@ -69,7 +76,8 @@ class GameEngine extends GameEnviornment {
         
         // Create the npc character
         const npc = NPCEntity({
-            scene: this._scene
+            scene: this._scene,
+            startingGun: peaShooter
         });   
         this._entityManager.Add(npc, "NPC");
     }

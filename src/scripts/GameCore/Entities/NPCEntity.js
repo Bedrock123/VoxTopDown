@@ -1,11 +1,16 @@
 // ECS
 import Entity from "@EntityComponentCore/Entity";
 
-// Player Components
-import {ModelLoader} from "@GameCore/Components/Common/ModelLoader";
+// NPC Components
+import NPCController from "@GameCore/Components/NPC/NPCController";
 
 // Common Components
+import {ModelLoader} from "@GameCore/Components/Common/ModelLoader";
+import Health from "@GameCore/Components/Common/Health";
 import HitBox from "@GameCore/Components/Common/HitBox";
+
+// Inventory Components
+import InventoryController from "@GameCore/Components/Inventory/InventoryController";
 
 export const NPCEntity = (params) => {
     const NPC = new Entity();
@@ -28,7 +33,24 @@ export const NPCEntity = (params) => {
         }
     }), "HitBox");
 
-    NPC.SetPosition(4, 0, 7);
+    NPC.AddComponent(new Health({
+        health: 100,
+        maxHealth: 100,
+    }), "Health");
+
+    NPC.AddComponent(new NPCController({
+    }), "NPCController");
+
+    // Handle initial player inventory
+    NPC.AddComponent(new InventoryController(), "InventoryController");
+
+    NPC.Broadcast({
+        topic: 'inventory.add',
+        value: params.startingGun,
+        equip: true
+      });  
+
+    NPC.SetPosition(0, 0, 7);
     
     // Return the npc
     return NPC;
