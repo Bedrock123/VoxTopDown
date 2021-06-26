@@ -3,7 +3,7 @@ import Component from '@EntityComponentCore/Component';
 
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 
-import gsap from 'gsap';
+
 
 
 class EquipItemModelManager extends Component {

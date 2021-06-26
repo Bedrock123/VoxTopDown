@@ -50,7 +50,7 @@ export const NPCEntity = (params) => {
         equip: true
       });  
 
-    NPC.SetPosition(0, 0, 7);
+    NPC.SetPosition(Math.random() * 5, 0, Math.random() * 7);
     
     // Return the npc
     return NPC;

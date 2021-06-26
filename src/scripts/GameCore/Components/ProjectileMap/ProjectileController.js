@@ -66,7 +66,7 @@ class ProjectileController extends Component {
 
                             // If the hit entity is a player then check to see if they are dogging or not
                             if (hitBoxToCheck.owner === "Player") {
-                                if (hitBoxToCheck.entity.GetComponent("PlayerController").PlayerState !== "doge") {
+                                if (hitBoxToCheck.entity.GetComponent("PlayerController").CanTakeDamage) {
                                     // Mark the projectile to tbe rmeoved
                                     removeProjectile = true;
                                 

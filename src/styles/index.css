@@ -4,3 +4,14 @@ body {
     overflow: hidden !important;
     background: white;
 }
+
+.weapon-information {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+}
+
+.weapon-information span {
+    font-family: 'VT323', monospace;
+    font-size: 30px;
+}

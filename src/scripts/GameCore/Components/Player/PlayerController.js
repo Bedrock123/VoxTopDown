@@ -16,6 +16,7 @@ class PlayerController extends Component {
         this._prevStateName = null;
         this._dogeMovement = null;
         this._dogeRotationHelper = [];
+        this._invincible = false;
         this._animations = {};
         this._stateMachine = new PlayerFiniteStateMachine(new CharacterControllerProxy(this._animations));
 
@@ -32,6 +33,9 @@ class PlayerController extends Component {
     InitComponent() {
         this._RegisterHandler('update.position', (m) => {
             this._OnPosition(m);
+        });
+        this._RegisterHandler('health.damage', (m) => {
+            this._OnDamage(m);
         });
     }
 
@@ -95,9 +99,21 @@ class PlayerController extends Component {
         return this._stateMachine._currentState;
     }
 
-    get PlayerState() {
-        return this._stateMachine._currentState.Name;
+    // Gets if the player can take damage - they are either doging or invisible
+    get CanTakeDamage() {
+        return this._stateMachine._currentState.Name !== 'doge' && !this._invincible;
     }
+
+
+    _OnDamage() {
+        // When the player takes damage, set a flag so they cant take any more until the timer is over
+        this._invincible = true;
+
+        // After globals timing set it back to false
+        setTimeout(function(){ this._invincible = false;  }.bind(this), globals.player.invincibilityRechargeTime);
+
+    }
+
 
     _GetPlayerPositionChange(keysPressed, currentState, timeDelta) {
         // Define the changes to the characters x and z coordinates

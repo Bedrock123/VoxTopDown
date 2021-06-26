@@ -28,7 +28,17 @@ class GameEngine extends GameEnviornment {
         this._Initialize();
         this._Animate();
         this._SetGridHelper();
+        this._LoadProjectileMap();
         this._LoadPlayer();
+    }
+
+    _LoadProjectileMap() {
+        // Create the projectile map entity
+        const projectileMap = ProjectileMapEntity({
+            scene: this._scene
+        });   
+
+        this._entityManager.Add(projectileMap, "ProjectileMap");
     }
 
     _LoadPlayer() {
@@ -67,12 +77,6 @@ class GameEngine extends GameEnviornment {
 
         this._entityManager.Add(player, "Player");
 
-        // Create the projectile map entity
-        const projectileMap = ProjectileMapEntity({
-            scene: this._scene
-        });   
-
-        this._entityManager.Add(projectileMap, "ProjectileMap");
         
         // Create the npc character
         const npc = NPCEntity({

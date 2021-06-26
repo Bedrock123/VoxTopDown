@@ -24,6 +24,8 @@ class Health extends Component {
 
     _OnDamage(m) {
         this._health = Math.max(0.0, this._health - m.damage);
+        console.clear();
+        console.log(this._health + "/" + this._maxHealth);
         if (this._health == 0) {
             this._OnDeath(m.attacker);
         }

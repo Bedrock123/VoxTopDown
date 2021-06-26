@@ -1,6 +1,7 @@
 import * as THREE from 'three';
-
+import globals from "@helpers/globals";
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+import gsap from 'gsap';
 
 // ECS
 import Component from '@EntityComponentCore/Component';
@@ -18,17 +19,9 @@ class PlayerModel extends Component {
         this._RegisterHandler('update.rotation', (m) => {
             this._OnRotation(m);
         });
-    }
-
-    _OnPosition(m) {
-        if (this._target) {
-            this._target.position.copy(m.value);
-        }
-    }
-    _OnRotation(m) {
-        if (this._target) {
-            this._target.rotation.copy(m.value);
-        }
+        this._RegisterHandler('health.damage', (m) => {
+            this._OnDamage(m);
+        });
     }
 
     _Init(params) {
@@ -36,6 +29,27 @@ class PlayerModel extends Component {
 
         this._LoadFBX();
     }
+
+
+    _OnPosition(m) {
+        if (this._target) {
+            this._target.position.copy(m.value);
+        }
+    }
+
+    _OnRotation(m) {
+        if (this._target) {
+            this._target.rotation.copy(m.value);
+        }
+    }
+
+    _OnDamage() {
+        this._playInvincibleAnimation = true;
+
+        // After globals timing set it back to false
+        setTimeout(function(){ this._playInvincibleAnimation = false;  }.bind(this), globals.player.invincibilityRechargeTime);
+    }
+
 
 
     _OnLoaded(fbx) {

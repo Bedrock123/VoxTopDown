@@ -73,8 +73,8 @@ export const PlayerEntity = (params) => {
 
   // Add health to the player
   Player.AddComponent(new Health({
-      health: 100,
-      maxHealth: 100,
+      health: 1000,
+      maxHealth: 1000,
   }), "Health");
 
 

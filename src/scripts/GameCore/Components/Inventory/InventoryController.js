@@ -26,7 +26,7 @@ class InventoryController extends Component {
         this._inventory.push(msg.value);
         
         // Add the holder to the gunController
-        msg.value.GetComponent("GunController")._owner = this._parent;
+        msg.value.GetComponent("GunController").SetOwner(this._parent);
 
         // If the added item should be equipred
         if (msg.equip) {
@@ -34,17 +34,28 @@ class InventoryController extends Component {
         }
     }
 
+    _UpdateHUD(gunController) {
+        // Add in the max ammo to the HUD
+        // Set the document to the things
+        const maxAmmo = document.getElementById("maxAmmo");
+        maxAmmo.innerText = gunController._gunDetails.maxAmmoCapacity;
+        const ammoLeft = document.getElementById("ammoLeft");
+        ammoLeft.innerText = gunController.ammoLeft;
+    }
+    
     _EquipItem(item) {
         // Equip the gun into the player inventory
         this._equippedInventoryItem = (item);
 
         // Get the gun controler details
-        const gunDetails = item.GetComponent("GunController")._gunDetails;
+        const gunController = item.GetComponent("GunController");
+
+        this._UpdateHUD(gunController);
 
         // Equip the model to the player
         this.Broadcast({
             topic: 'inventory.equipItemModel',
-            value: gunDetails.modelPath,
+            value: gunController._gunDetails.modelPath,
             added: false,
         });
     }

@@ -12,14 +12,18 @@ class GunController extends Component {
 
         this._lastShot = null; // the time stamp of the last shot
         this._bulletsLeftInMagazine = this._gunDetails.magazineCapacity; // the relative current mag size
+        this.ammoLeft = this._gunDetails.maxAmmoCapacity;
     }
 
     InitComponent() {
         // Listen for then the player entity triggers the item
         this._RegisterHandler('item.trigger', (m) => this._OnTrigger(m));
-
     }
 
+    // Sets the guns owner (Player or Enemy AI)
+    SetOwner(owner) {
+        this._owner = owner;
+    }
 
     _OnTrigger(m) {
 
@@ -35,6 +39,7 @@ class GunController extends Component {
 
                 // Reduce the bullets in mag
                 this._bulletsLeftInMagazine -= 1;
+                this.ammoLeft -= 1;
 
                 // Shoot the gun
                 this._Shoot(m);
@@ -51,6 +56,7 @@ class GunController extends Component {
 
                     // Reduce the bullets left in magainze
                     this._bulletsLeftInMagazine -= 1;
+                    this.ammoLeft -= 1;
 
                     // Fire the gun
                     this._Shoot(m);
@@ -58,6 +64,11 @@ class GunController extends Component {
             }
         }
 
+    }
+
+    _UpdateHUD() {
+        const ammoLeft = document.getElementById("ammoLeft");
+        ammoLeft.innerText = this.ammoLeft;
     }
 
     _Shoot(m) {
@@ -69,6 +80,11 @@ class GunController extends Component {
             owner: this._owner.Name,
             damage: this._gunDetails.damage
         });
+
+        // If the player is shooting, then update the HUD
+        if (this._owner.Name === "Player") {
+            this._UpdateHUD();
+        }
 
         // // Send to the gun owner that it is shot to edit
         // this._owner.Broadcast({
