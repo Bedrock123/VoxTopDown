@@ -8,9 +8,13 @@ import DebugCamera from "@GameCore/Components/Player/DebugCamera";
 import PlayerInput from "@GameCore/Components/Player/PlayerInput";
 import PlayerController from "@GameCore/Components/Player/PlayerController";
 import EquipItemModelManager from "@GameCore/Components/Player/EquipItemModelManager";
-import HitBox from "@GameCore/Components/Common/HitBox";
+
+// Player HUD
+import WeaponHUD from "@GameCore/Components/Player/HUD/WeaponHUD";
+import HealthHUD from "@GameCore/Components/Player/HUD/HealthHUD";
 
 // Common
+import HitBox from "@GameCore/Components/Common/HitBox";
 import GridController from "@GameCore/Components/Common/GridController";
 import Health from "@GameCore/Components/Common/Health";
 
@@ -19,6 +23,10 @@ import InventoryController from "@GameCore/Components/Inventory/InventoryControl
 
 export const PlayerEntity = (params) => {
   const Player = new Entity();
+
+  // Handles the plaeys HUD Components
+  Player.AddComponent(new WeaponHUD(), "WeaponHUD");
+  Player.AddComponent(new HealthHUD(), "HealthHUD");
 
   // Add in Equip weapon model manager
   Player.AddComponent(new EquipItemModelManager({
@@ -70,11 +78,12 @@ export const PlayerEntity = (params) => {
 
   // Handle initial player inventory
   Player.AddComponent(new InventoryController(), "InventoryController");
+  
 
   // Add health to the player
   Player.AddComponent(new Health({
-      health: 1000,
-      maxHealth: 1000,
+      health: 6,
+      player: true,
   }), "Health");
 
 

@@ -34,8 +34,7 @@ export const NPCEntity = (params) => {
     }), "HitBox");
 
     NPC.AddComponent(new Health({
-        health: 100,
-        maxHealth: 100,
+        health: 100
     }), "Health");
 
     NPC.AddComponent(new NPCController({

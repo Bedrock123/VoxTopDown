@@ -17,7 +17,7 @@ class GameEnviornment {
         if (globals.debug) {
             // Initalize the stats menu
             this._InitalizeStatsMenu();
-            this._InitalizeGUI();
+            // this._InitalizeGUI();
         }
     }
 

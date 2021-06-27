@@ -2,8 +2,8 @@
 // Dict of all guns + types
 const Guns = {
     peaShooter: {
-        maxAmmoCapacity: 500,
-        magazineCapacity: 50,
+        maxAmmoCapacity: 300,
+        magazineCapacity: 12,
         modelPath: "PeaShooter.fbx",
         rateOfFire: 1,
         damage: 1,
@@ -17,8 +17,8 @@ const Guns = {
 
     },
     longRifle: {
-        maxAmmoCapacity: 10,
-        magazineCapacity: 50,
+        maxAmmoCapacity: 15,
+        magazineCapacity: 3,
         modelPath: "LongRifle.fbx",
         rateOfFire: 300,
         damage: 1,
@@ -27,21 +27,21 @@ const Guns = {
         accuracy: 1,
         bulletSpeed: 100,
         force: 1,
-        reloadTime: 200,
+        reloadTime: 500,
         bulletRange: 140
     },
     AK47: {
         maxAmmoCapacity: 500,
-        magazineCapacity: 50,
+        magazineCapacity: 20,
         modelPath: "AK47.fbx",
-        rateOfFire: 30,
+        rateOfFire: 100,
         damage: 1,
         bulletColor: 'purple',
         action: 'bullet',
         accuracy: .9,
         bulletSpeed: 25,
         force: 1,
-        reloadTime: 200,
+        reloadTime: 500,
         bulletRange: 200
     },
 };

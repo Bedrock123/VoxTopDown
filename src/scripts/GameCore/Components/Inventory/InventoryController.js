@@ -34,15 +34,6 @@ class InventoryController extends Component {
         }
     }
 
-    _UpdateHUD(gunController) {
-        // Add in the max ammo to the HUD
-        // Set the document to the things
-        const maxAmmo = document.getElementById("maxAmmo");
-        maxAmmo.innerText = gunController._gunDetails.maxAmmoCapacity;
-        const ammoLeft = document.getElementById("ammoLeft");
-        ammoLeft.innerText = gunController.ammoLeft;
-    }
-    
     _EquipItem(item) {
         // Equip the gun into the player inventory
         this._equippedInventoryItem = (item);
@@ -50,7 +41,15 @@ class InventoryController extends Component {
         // Get the gun controler details
         const gunController = item.GetComponent("GunController");
 
-        this._UpdateHUD(gunController);
+        // Broad cast an weapon equip to the player weapon HUD
+        this.Broadcast({
+            topic: "weapon.equip",
+            ammoLeftInMag: gunController.bulletsLeftInMagazine,
+            magCapacity: gunController._gunDetails.magazineCapacity,
+            ammoLeft: gunController.ammoLeft,
+            maxAmmo: gunController._gunDetails.maxAmmoCapacity
+
+        });
 
         // Equip the model to the player
         this.Broadcast({

@@ -7,9 +7,10 @@ class Health extends Component {
     constructor(params) {
         super();
         this._health = params.health;
-        this._maxHealth = params.maxHealth;
+        this._player = params.player;
         this._params = params;
     }
+
     InitComponent() {
         this._RegisterHandler('health.damage', (m) => {
             this._OnDamage(m);
@@ -23,9 +24,19 @@ class Health extends Component {
     }
 
     _OnDamage(m) {
-        this._health = Math.max(0.0, this._health - m.damage);
-        console.clear();
-        console.log(this._health + "/" + this._maxHealth);
+        // If the health compone is owned by the player then only decrent 1 health point oer hit
+        if (this._player) {
+            this._health = Math.max(0.0, this._health - 1);
+            
+            // Send updates to the HUD
+            this.Broadcast({
+                topic: 'healthHUD.damage',
+                healthLeft: this._health
+            });
+
+        } else {
+            this._health = Math.max(0.0, this._health - m.damage);
+        }
         if (this._health == 0) {
             this._OnDeath(m.attacker);
         }

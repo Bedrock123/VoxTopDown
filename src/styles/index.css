@@ -5,13 +5,24 @@ body {
     background: white;
 }
 
-.weapon-information {
+.weapon-hud-container {
     position: fixed;
     right: 10px;
     bottom: 10px;
 }
 
-.weapon-information span {
+.weapon-hud-container span {
+    font-family: 'VT323', monospace;
+    font-size: 30px;
+}
+
+.health-hud-container {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+}
+
+.health-hud-container span {
     font-family: 'VT323', monospace;
     font-size: 30px;
 }

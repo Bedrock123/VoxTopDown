@@ -8,9 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="weapon-information">
+    <div class="health-hud-container">
+        <span id="healthLeft">6</span>
+    </div>
+    <div class="weapon-hud-container">
         <div class="max-ammo-count">
-            <span id="ammoLeft">123</span> / <span id="maxAmmo">234</span>
+            <span id="ammoLeftInMag">-</span> / <span id="magCapacity">-</span>
+            <br />
+            <span id="ammoLeft">-</span> / <span id="maxAmmo">-</span>
         </div>
     </div>
     <canvas class="webgl"></canvas>
