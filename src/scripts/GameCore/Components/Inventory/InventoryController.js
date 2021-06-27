@@ -19,6 +19,9 @@ class InventoryController extends Component {
         
         // If the item is swapped
         this._RegisterHandler('inventory.swapItem', (m) => this._OnInventoryItemSwap(m));
+
+        // If the item is reloaded
+        this._RegisterHandler('inventory.reload', (m) => this._OnInventoryItemReload(m));
     }
 
     _OnInventoryAdded(msg) {
@@ -67,6 +70,16 @@ class InventoryController extends Component {
                 topic: 'item.trigger',
                 playerPosition: m.playerPosition,
                 playerRotation: m.playerRotation
+            });
+        };
+    }
+
+    //  Reload the current equipped item
+    _OnInventoryItemReload(m) {
+        // If there is an equipped weapon entity
+        if (this._equippedInventoryItem) {
+            this._equippedInventoryItem.Broadcast({
+                topic: 'item.reload'
             });
         };
     }

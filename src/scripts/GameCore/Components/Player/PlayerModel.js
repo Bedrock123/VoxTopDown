@@ -100,6 +100,7 @@ class PlayerModel extends Component {
         loader.load('run.fbx', (a) => { _OnLoad('run', a); });
         loader.load('jump.fbx', (a) => { _OnLoad('doge', a); });
         loader.load('shoot.fbx', (a) => { _OnLoad('shoot', a); });
+        loader.load('death.fbx', (a) => { _OnLoad('death', a); });
 
         // Append the model to the pivto to ensure te centering is correc
         const box = new THREE.Box3().setFromObject( fbx );

@@ -27,9 +27,9 @@ class GameEngine extends GameEnviornment {
     Init() {
         this._Initialize();
         this._Animate();
-        this._SetGridHelper();
         this._LoadProjectileMap();
         this._LoadPlayer();
+        this._SetGridHelper();
     }
 
     _LoadProjectileMap() {
@@ -81,7 +81,8 @@ class GameEngine extends GameEnviornment {
         // Create the npc character
         const npc = NPCEntity({
             scene: this._scene,
-            startingGun: peaShooter
+            startingGun: peaShooter,
+            grid: this._grid
         });   
         this._entityManager.Add(npc, "NPC");
     }

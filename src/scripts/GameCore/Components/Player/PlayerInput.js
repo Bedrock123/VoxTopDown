@@ -89,6 +89,7 @@ class PlayerInput extends Component {
         addKey(87, 'up');
         addKey(83, 'down');
         addKey(32, 'space');
+        addKey(82, 'rKey');
         
         // Add in the window event listeners
         window.addEventListener('keydown', (e) => {

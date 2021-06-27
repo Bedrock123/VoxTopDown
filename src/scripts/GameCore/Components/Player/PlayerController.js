@@ -37,13 +37,38 @@ class PlayerController extends Component {
         this._RegisterHandler('health.damage', (m) => {
             this._OnDamage(m);
         });
+        this._RegisterHandler('health.death', (m) => { 
+            this._OnDeath(m); 
+        });
     }
+
+
 
     _OnPosition(m) {
         if (this._target) {
             this._target.position.set(m.value.x, 0, m.value.z);
         }
     }
+
+    _OnDamage() {
+        // When the player takes damage, set a flag so they cant take any more until the timer is over
+        this._invincible = true;
+
+        // After globals timing set it back to false
+        setTimeout(function(){ this._invincible = false;  }.bind(this), globals.player.invincibilityRechargeTime);
+    }
+
+    _OnDeath(msg) {
+        this._stateMachine.SetState('death');
+    }
+
+
+    // Gets if the player can take damage - they are either doging or invisible
+    get CanTakeDamage() {
+        return this._stateMachine._currentState.Name !== 'doge' && !this._invincible;
+    }
+
+        
 
     _SetPlayerOrientationHelpers() {
         // Helpers guide the player model orientation
@@ -98,22 +123,6 @@ class PlayerController extends Component {
         }
         return this._stateMachine._currentState;
     }
-
-    // Gets if the player can take damage - they are either doging or invisible
-    get CanTakeDamage() {
-        return this._stateMachine._currentState.Name !== 'doge' && !this._invincible;
-    }
-
-
-    _OnDamage() {
-        // When the player takes damage, set a flag so they cant take any more until the timer is over
-        this._invincible = true;
-
-        // After globals timing set it back to false
-        setTimeout(function(){ this._invincible = false;  }.bind(this), globals.player.invincibilityRechargeTime);
-
-    }
-
 
     _GetPlayerPositionChange(keysPressed, currentState, timeDelta) {
         // Define the changes to the characters x and z coordinates
@@ -192,18 +201,10 @@ class PlayerController extends Component {
     }
 
 
-    _HandleMovement(timeDelta, input) {
-        // If there is no default player state then do nothing
-        if (!this._stateMachine._currentState) {
-            return;
-        }
-
+    _HandleMovement(timeDelta, input, currentState) {
         const keysPressed = input.keysPressed;
         this._intersectPoint = input.intersectPoint;
         
-        // Get the current state and if it is not the following then cancel
-        const currentState =  this._UpdateStateMachineAndGetCurrentState(timeDelta, input);
-
         // Get the parent position and rotation
         const controlObject = this._parent;
 
@@ -276,21 +277,19 @@ class PlayerController extends Component {
         topDownCamera._cameraControls.moveTo(middlePoint.x, middlePoint.y, middlePoint.z, true);
     }
     
-    _HandleTriggerItem(_, input) {
+    _HandleTriggerItem(_, input, currentState) {
         // If they are not currently dogging as well
-        if (this._stateMachine._currentState) {
-            const triggerInventoryItem = input.mouseButtonsPressed.left && this._stateMachine._currentState.Name !== "doge";
-            
-            // If they are shooting then broadcast shoot
-            // Pass in the player position and rotation to the item for actions
-            if (triggerInventoryItem) {
-                this.Broadcast({
-                    topic: 'inventory.triggerItem',
-                    playerPosition: this._parent._position,
-                    playerRotation: this._parent._rotation
-                });
-            };
-        }
+        const triggerInventoryItem = input.mouseButtonsPressed.left && currentState.Name !== "doge";
+        
+        // If they are shooting then broadcast shoot
+        // Pass in the player position and rotation to the item for actions
+        if (triggerInventoryItem) {
+            this.Broadcast({
+                topic: 'inventory.triggerItem',
+                playerPosition: this._parent._position,
+                playerRotation: this._parent._rotation
+            });
+        };
     }
 
     _HandleInventoryChange(_, input) {
@@ -306,18 +305,45 @@ class PlayerController extends Component {
         }
     }
 
+    _HaneItemReload(_, input) {
+        const reloadItem = input.keysPressed.rKey;
+
+        // Change the weapon on a set interval if it is pressed
+        if (reloadItem.justPressed) {
+            // Change the just pressed key back to false
+            input.keysPressed.rKey.justPressed = false;
+            this.Broadcast({
+                topic: 'inventory.reload',
+            });
+        }
+    }
+
     Update(timeDelta) {
         // Get the input constants
         const input = this.GetComponent('PlayerInput');
 
-        // Handle the player movememtn
-        this._HandleMovement(timeDelta, input);
+        // If there is no default player state then do nothing
+        if (!this._stateMachine._currentState) {
+            return;
+        }
 
-        // Handle hte player shooting
-        this._HandleTriggerItem(timeDelta, input);
+        // Get the current state and if it is not the following then cancel
+        const currentState =  this._UpdateStateMachineAndGetCurrentState(timeDelta, input);
 
-        // Handle weapon changes
-        this._HandleInventoryChange(timeDelta, input);
+        if (currentState.Name !== "death") {
+            // Handle the player movememtn
+            this._HandleMovement(timeDelta, input, currentState);
+    
+            // Handle hte player shooting
+            this._HandleTriggerItem(timeDelta, input, currentState);
+    
+            // Handle weapon changes
+            this._HandleInventoryChange(timeDelta, input);
+            
+            // Handle weapon reload 
+            this._HaneItemReload(timeDelta, input);
+        }
+
     }
 
 }

@@ -82,7 +82,7 @@ export const PlayerEntity = (params) => {
 
   // Add health to the player
   Player.AddComponent(new Health({
-      health: 6,
+      health: 3,
       player: true,
   }), "Health");
 

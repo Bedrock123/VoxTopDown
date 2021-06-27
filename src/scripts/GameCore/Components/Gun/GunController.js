@@ -19,6 +19,9 @@ class GunController extends Component {
     InitComponent() {
         // Listen for then the player entity triggers the item
         this._RegisterHandler('item.trigger', (m) => this._OnTrigger(m));
+        
+        // Listen for then the player entity reloads the item
+        this._RegisterHandler('item.reload', (m) => this._Reload(m));
     }
 
     // Sets the guns owner (Player or Enemy AI)
@@ -69,36 +72,44 @@ class GunController extends Component {
             if (this.ammoLeft > 0 && !this._reloading) {
                 // Reload the gun
                 this._Reload();
-
-                this._reloading = true;
-
             }
         }
     }
 
     _Reload() {
-        // If the player needs to reload then trigger on relod broad
-        this._owner.Broadcast({
-            topic: 'weapon.reloading'
-        });
 
-        // Reload the gun after the duration of the reload time
-        setTimeout(function(){
-            if (this.ammoLeft < this._gunDetails.magazineCapacity) {
-                this.bulletsLeftInMagazine = this.ammoLeft;
-            } else {
-                this.bulletsLeftInMagazine = this._gunDetails.magazineCapacity;
-            }
-
-            // Proad cast the reload function
+        // If we are not currently reloading now
+        if (
+            !this._reloading && 
+            (this.bulletsLeftInMagazine !== this._gunDetails.magazineCapacity)
+        ) {
+            // Set reloading to true
+            this._reloading = true;
+    
+            // If the player needs to reload then trigger on relod broad
             this._owner.Broadcast({
-                topic: 'weapon.reloaded',
-                ammoLeftInMag: this.bulletsLeftInMagazine
+                topic: 'weapon.reloading'
             });
+    
+            // Reload the gun after the duration of the reload time
+            setTimeout(function(){
+                if (this.ammoLeft < this._gunDetails.magazineCapacity) {
+                    this.bulletsLeftInMagazine = this.ammoLeft;
+                } else {
+                    this.bulletsLeftInMagazine = this._gunDetails.magazineCapacity;
+                }
+    
+                // Proad cast the reload function
+                this._owner.Broadcast({
+                    topic: 'weapon.reloaded',
+                    ammoLeftInMag: this.bulletsLeftInMagazine
+                });
+    
+                this._reloading = false;
+    
+            }.bind(this), this._gunDetails.reloadTime);
+        }
 
-            this._reloading = false;
-
-        }.bind(this), this._gunDetails.reloadTime);
     }
 
 

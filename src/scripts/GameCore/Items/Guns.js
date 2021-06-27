@@ -5,7 +5,7 @@ const Guns = {
         maxAmmoCapacity: 300,
         magazineCapacity: 12,
         modelPath: "PeaShooter.fbx",
-        rateOfFire: 1,
+        rateOfFire: 100,
         damage: 1,
         bulletColor: 'black',
         action: 'bullet',
@@ -41,7 +41,7 @@ const Guns = {
         accuracy: .9,
         bulletSpeed: 25,
         force: 1,
-        reloadTime: 500,
+        reloadTime: 1500,
         bulletRange: 200
     },
 };

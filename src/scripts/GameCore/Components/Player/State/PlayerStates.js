@@ -143,11 +143,42 @@ export const PlayerStates = (() => {
         }
     };
 
+    class DeathState extends State {
+        constructor(parent) {
+            super(parent);
+        }
+
+        get Name() {
+            return 'death';
+        }
+
+        Enter(prevState) {
+            this._action = this._parent._proxy._animations['death'].action;
+        
+            if (prevState) {
+                const prevAction = this._parent._proxy._animations[prevState.Name].action;
+        
+                this._action.reset();  
+                this._action.setLoop(THREE.LoopOnce, 1);
+                this._action.clampWhenFinished = true;
+                this._action.crossFadeFrom(prevAction, 0.01, true);
+                this._action.setEffectiveTimeScale(1);
+                this._action.play();
+            } else {
+                this._action.play();
+            }
+        }
+
+        Exit() {
+        }
+    };
+
     return {
         State: State,
         IdleState: IdleState,
         RunState: RunState,
-        DogeState: DogeState
+        DogeState: DogeState,
+        DeathState: DeathState
     };
 
 })();

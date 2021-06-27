@@ -8,6 +8,7 @@ import NPCController from "@GameCore/Components/NPC/NPCController";
 import {ModelLoader} from "@GameCore/Components/Common/ModelLoader";
 import Health from "@GameCore/Components/Common/Health";
 import HitBox from "@GameCore/Components/Common/HitBox";
+import GridController from "@GameCore/Components/Common/GridController";
 
 // Inventory Components
 import InventoryController from "@GameCore/Components/Inventory/InventoryController";
@@ -36,6 +37,11 @@ export const NPCEntity = (params) => {
     NPC.AddComponent(new Health({
         health: 100
     }), "Health");
+
+      // Add in the grid controller
+    NPC.AddComponent( new GridController({
+        grid: params.grid
+    }), "GridController");
 
     NPC.AddComponent(new NPCController({
     }), "NPCController");

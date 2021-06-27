@@ -57,6 +57,7 @@ export default class SpacialHashGrid {
         }
         this.Remove(client);
         this._Insert(client);
+        // this._PrintClientPositions();
     }
 
     FindNear(position, bounds) {

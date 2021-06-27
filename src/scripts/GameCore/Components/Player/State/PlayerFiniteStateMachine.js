@@ -15,6 +15,7 @@ class PlayerFiniteStateMachine extends FiniteStateMachine {
         this._AddState('idle', PlayerStates.IdleState);
         this._AddState('run', PlayerStates.RunState);
         this._AddState('doge', PlayerStates.DogeState);
+        this._AddState('death', PlayerStates.DeathState);
     }
 };
 
