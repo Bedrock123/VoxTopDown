@@ -103,7 +103,7 @@ export const ModelLoader = (() => {
             const center = box.getCenter(obj.position);
 
             // Center the model based on the center point
-            obj.position.set(-center.x, 0, -center.z);
+            obj.position.set(-center.x, -3, -center.z);
 
             // Create a new pivot objecto be used as target
             const pivot = new THREE.Object3D();

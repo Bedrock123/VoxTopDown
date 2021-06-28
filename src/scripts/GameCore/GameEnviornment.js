@@ -34,7 +34,7 @@ class GameEnviornment {
 
         // Scene
         this._scene = new THREE.Scene();
-        this._scene.background = new THREE.Color("#fff");
+        this._scene.background = new THREE.Color("#222");
 
         // Camnera
         this._camera = new THREE.PerspectiveCamera( 60, sizes.width / sizes.height, 3, 100 );
