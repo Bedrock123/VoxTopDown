@@ -11,7 +11,7 @@ import Guns from "@GameCore/Items/Guns";
 import { PlayerEntity } from "@GameCore/Entities/PlayerEntity";
 import { GunEntity } from "@GameCore/Entities/GunEntity";
 import { ProjectileMapEntity } from "@GameCore/Entities/ProjectileMapEntity";
-import { NPCEntity } from "@GameCore/Entities/NPCEntity";
+import { EnemyEntity } from "@GameCore/Entities/EnemyEntity";
 
 // ECS
 import SpacialHashGrid from "@EntityComponentCore/utils/SpacialHashGrid";
@@ -79,7 +79,7 @@ class GameEngine extends GameEnviornment {
 
         
         // Create the npc character
-        const npc = NPCEntity({
+        const npc = EnemyEntity({
             scene: this._scene,
             startingGun: peaShooter,
             grid: this._grid

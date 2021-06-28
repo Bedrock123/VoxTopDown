@@ -68,6 +68,13 @@ class PlayerController extends Component {
         return this._stateMachine._currentState.Name !== 'doge' && !this._invincible;
     }
 
+    // If the player is in doge state
+    get HideWeaponModel() {
+        if (this._stateMachine && this._stateMachine._currentState) {
+            return this._stateMachine._currentState.Name === "doge"  || this._stateMachine._currentState.Name === "death";
+        }
+    }
+
         
 
     _SetPlayerOrientationHelpers() {

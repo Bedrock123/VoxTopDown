@@ -2,7 +2,7 @@
 // ECS
 import Component from '@EntityComponentCore/Component';
 
-class NPCController extends Component {
+class EnemyController extends Component {
     constructor(params) {
         super();
     }
@@ -14,8 +14,8 @@ class NPCController extends Component {
             playerRotation: this._parent._rotation
         });
 
-        this._parent.SetRotation(0, this._parent._rotation.y += (timeDelta * 3) ,0);
+        // this._parent.SetRotation(0, this._parent._rotation.y += (timeDelta * 1) ,0);
     }
 }
 
-export default NPCController;
+export default EnemyController;

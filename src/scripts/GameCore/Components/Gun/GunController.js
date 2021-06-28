@@ -116,7 +116,7 @@ class GunController extends Component {
     _Shoot(m) {
         // Send to the gun entity that we should shoot the gun
         this.Broadcast({
-            topic: 'gun.shoot',
+            topic: 'weapon.shoot',
             startingPosition: m.playerPosition,
             startingRotation: m.playerRotation,
             owner: this._owner.Name,

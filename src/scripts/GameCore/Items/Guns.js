@@ -31,15 +31,15 @@ const Guns = {
         bulletRange: 140
     },
     AK47: {
-        maxAmmoCapacity: 500,
-        magazineCapacity: 20,
-        modelPath: "AK47.fbx",
-        rateOfFire: 100,
+        maxAmmoCapacity: 500000,
+        magazineCapacity: 20000,
+        modelPath: "Revolver_4.fbx",
+        rateOfFire: 1,
         damage: 1,
-        bulletColor: 'purple',
+        bulletColor: '#f39c12',
         action: 'bullet',
-        accuracy: .9,
-        bulletSpeed: 25,
+        accuracy: 1,
+        bulletSpeed: 60,
         force: 1,
         reloadTime: 1500,
         bulletRange: 200

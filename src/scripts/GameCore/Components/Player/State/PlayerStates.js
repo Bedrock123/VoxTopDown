@@ -32,9 +32,11 @@ export const PlayerStates = (() => {
                 idleAction.setEffectiveWeight(1.0);
                 idleAction.crossFadeFrom(prevAction, 0.25, true);
                 idleAction.play();
+                idleAction.paused = true;
 
             } else {
                 idleAction.play();
+                idleAction.paused = true;
             }
         }
 
@@ -65,6 +67,7 @@ export const PlayerStates = (() => {
             if (prevState) {
                 const prevAction = this._parent._proxy._animations[prevState.Name].action;
                 curAction.enabled = true;
+                curAction.paused = false;
                 curAction.time = 0.0;
                 curAction.setEffectiveTimeScale(1.0);
                 curAction.setEffectiveWeight(1.0);
@@ -112,7 +115,7 @@ export const PlayerStates = (() => {
         
             if (prevState) {
                 const prevAction = this._parent._proxy._animations[prevState.Name].action;
-        
+                
                 this._action.reset();  
                 this._action.setLoop(THREE.LoopOnce, 1);
                 this._action.clampWhenFinished = true;

@@ -96,7 +96,7 @@ class PlayerModel extends Component {
         // Fetch and load all of the player animations
         const loader = new FBXLoader(this._manager);
         loader.setPath('/public/voxel/');
-        loader.load('model.fbx', (a) => { _OnLoad('idle', a); });
+        loader.load('run.fbx', (a) => { _OnLoad('idle', a); });
         loader.load('run.fbx', (a) => { _OnLoad('run', a); });
         loader.load('jump.fbx', (a) => { _OnLoad('doge', a); });
         loader.load('shoot.fbx', (a) => { _OnLoad('shoot', a); });
@@ -132,7 +132,7 @@ class PlayerModel extends Component {
         this.Broadcast({
             topic: 'load.character',
             bones: this._bones,
-            target: fbx
+            target: pivot
         });
     }
 

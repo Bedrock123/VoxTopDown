@@ -30,7 +30,8 @@ export const PlayerEntity = (params) => {
 
   // Add in Equip weapon model manager
   Player.AddComponent(new EquipItemModelManager({
-    anchor: 'mixamorigRightHandIndex1'
+    anchor: 'mixamorigRightHandIndex1',
+    player: true
   }), "EquipItemModelManager");
 
   // Add in the grid controller
@@ -82,7 +83,7 @@ export const PlayerEntity = (params) => {
 
   // Add health to the player
   Player.AddComponent(new Health({
-      health: 3,
+      health: 6,
       player: true,
   }), "Health");
 

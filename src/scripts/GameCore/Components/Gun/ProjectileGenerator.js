@@ -15,12 +15,12 @@ class ProjectileGenerator extends Component {
 
     InitComponent() {
         // Listen for then the player entity triggers the item
-        this._RegisterHandler('gun.shoot', (m) => this._Shoot(m));
+        this._RegisterHandler('weapon.shoot', (m) => this._Shoot(m));
     }
 
     _Init() {
         // Create the projective grometry and material
-        this._projectileGeometry = new THREE.SphereGeometry(.2, 32, 32);
+        this._projectileGeometry = new THREE.SphereGeometry(.4, 32, 32);
         this._projectileMaterial = new THREE.MeshBasicMaterial({ color: this._gunDetails.bulletColor });
     }
 
@@ -49,7 +49,7 @@ class ProjectileGenerator extends Component {
         this._params.scene.add(projectile);
         
         // Push the projectile forward a little
-        projectile.translateZ(1.3);
+        projectile.translateZ(4.3);
         
         // Add the project to the gobal projectiles fired so we can track collision
         const projectileMap = this.FindEntity("ProjectileMap");

@@ -1,8 +1,8 @@
 // ECS
 import Entity from "@EntityComponentCore/Entity";
 
-// NPC Components
-import NPCController from "@GameCore/Components/NPC/NPCController";
+// Enemy Components
+import EnemyController from "@GameCore/Components/Enemy/EnemyController";
 
 // Common Components
 import {ModelLoader} from "@GameCore/Components/Common/ModelLoader";
@@ -13,19 +13,19 @@ import GridController from "@GameCore/Components/Common/GridController";
 // Inventory Components
 import InventoryController from "@GameCore/Components/Inventory/InventoryController";
 
-export const NPCEntity = (params) => {
-    const NPC = new Entity();
+export const EnemyEntity = (params) => {
+    const Enemy = new Entity();
     
-    NPC.AddComponent(new ModelLoader.StaticModelComponent({
+    Enemy.AddComponent(new ModelLoader.StaticModelComponent({
         scene: params.scene,
-        resourcePath: '/public/npc/',
+        resourcePath: '/public/Enemy/',
         resourceName: 'peasant_girl.fbx',
         scale: 0.035,
         receiveShadow: true,
         castShadow: true,
     }), "StaticModel");
 
-    NPC.AddComponent(new HitBox({
+    Enemy.AddComponent(new HitBox({
         scene: params.scene,
         size: {
             x: 2,
@@ -34,29 +34,29 @@ export const NPCEntity = (params) => {
         }
     }), "HitBox");
 
-    NPC.AddComponent(new Health({
+    Enemy.AddComponent(new Health({
         health: 100
     }), "Health");
 
       // Add in the grid controller
-    NPC.AddComponent( new GridController({
+    Enemy.AddComponent( new GridController({
         grid: params.grid
     }), "GridController");
 
-    NPC.AddComponent(new NPCController({
-    }), "NPCController");
+    Enemy.AddComponent(new EnemyController({
+    }), "EnemyController");
 
     // Handle initial player inventory
-    NPC.AddComponent(new InventoryController(), "InventoryController");
+    Enemy.AddComponent(new InventoryController(), "InventoryController");
 
-    NPC.Broadcast({
+    Enemy.Broadcast({
         topic: 'inventory.add',
         value: params.startingGun,
         equip: true
-      });  
+    });  
 
-    NPC.SetPosition(Math.random() * 5, 0, Math.random() * 7);
+    Enemy.SetPosition(Math.random() * 5, 0, Math.random() * 7);
     
-    // Return the npc
-    return NPC;
+    // Return the Enemy
+    return Enemy;
 };;
