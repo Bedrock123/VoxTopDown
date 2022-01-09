@@ -14,7 +14,7 @@ class EnemyController extends Component {
             playerRotation: this._parent._rotation
         });
 
-        // this._parent.SetRotation(0, this._parent._rotation.y += (timeDelta * 1) ,0);
+        this._parent.SetRotation(0, this._parent._rotation.y += (timeDelta * 1) ,0);
     }
 }
 

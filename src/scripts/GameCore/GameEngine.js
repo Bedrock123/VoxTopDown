@@ -82,7 +82,7 @@ class GameEngine extends GameEnviornment {
             scene: this._scene,
             resourcePath: '/public/',
             resourceName: 'scene.gltf',
-            scale: 2.035,
+            scale: 1.135,
             receiveShadow: true,
             castShadow: true,
         });
