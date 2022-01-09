@@ -1,0 +1,23 @@
+
+Index
+    - Iniitlizaes new GameEngine
+        - Runs Init
+
+
+Game Core (Custom Business Logic)
+    GameEnviornment.js
+        - Initializes the canvas
+        - Sets up the animation function
+        - Sets up the DAT control panel and FPS counter panel
+        - Initialize runs under game gameengine extension
+
+    GameEngine.js
+        - Construction
+            - Enttity EntityManager
+            - Spacial Has Grid
+        - Initialize
+            - Runs animation frames
+            - Runs Game Enviiornment Initialize
+            - Loads Key Components
+            - Loads Projectile Map
+        

@@ -34,15 +34,15 @@ const Guns = {
         maxAmmoCapacity: 500000,
         magazineCapacity: 20000,
         modelPath: "Revolver_4.fbx",
-        rateOfFire: 1,
+        rateOfFire: .2,
         damage: 1,
-        bulletColor: '#f39c12',
+        bulletColor: 'red',
         action: 'bullet',
-        accuracy: 1,
-        bulletSpeed: 60,
+        accuracy: .1,
+        bulletSpeed: 30,
         force: 1,
         reloadTime: 1500,
-        bulletRange: 200
+        bulletRange: 40
     },
 };
 

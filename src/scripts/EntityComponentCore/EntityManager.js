@@ -1,46 +1,40 @@
 
 class EntityManager {
   constructor() {
-    this._ids = 0;
+    this._ids = 0; // 
     this._entitiesMap = {};
     this._entities = [];
   }
 
+  // Private
   _GenerateName() {
     this._ids += 1;
-
     return '__name__' + this._ids;
   }
 
-  Get(n) {
-    return this._entitiesMap[n];
+  // Gets entity based on entity generated or custom name
+  Get(customName) {
+    return this._entitiesMap[customName];
   }
 
-  Filter(cb) {
-    return this._entities.filter(cb);
+  // Pass in a custom filter function to get a specific list of entities
+  Filter(filterFunction) {
+    return this._entities.filter(filterFunction);
   }
 
-  Add(e, n) {
-    if (!n) {
-      n = this._GenerateName();
+  // Pass in an entity and custom name
+  Add(entity, customName) {
+    if (!customName) {
+      customName = this._GenerateName();
     }
+    this._entitiesMap[customName] = entity;
+    this._entities.push(entity);
 
-    this._entitiesMap[n] = e;
-    this._entities.push(e);
-
-    e.SetParent(this);
-    e.SetName(n);
+    entity.SetParent(this);
+    entity.SetName(customName);
   }
 
-  SetActive(e, b) {
-    const i = this._entities.indexOf(e);
-    if (i < 0) {
-      return;
-    }
-
-    this._entities.splice(i, 1);
-  }
-
+  // Update each component with delta time
   Update(deltaTime) {
     for (let e of this._entities) {
       e.Update(deltaTime);

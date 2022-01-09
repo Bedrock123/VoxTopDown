@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import globals from "@helpers/globals";
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
-import gsap from 'gsap';
+
 
 // ECS
 import Component from '@EntityComponentCore/Component';

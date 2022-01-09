@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 // ECS
 import EntityManager from "@EntityComponentCore/EntityManager";
 
@@ -12,7 +10,7 @@ import { PlayerEntity } from "@GameCore/Entities/PlayerEntity";
 import { GunEntity } from "@GameCore/Entities/GunEntity";
 import { ProjectileMapEntity } from "@GameCore/Entities/ProjectileMapEntity";
 import { EnemyEntity } from "@GameCore/Entities/EnemyEntity";
-import {ModelLoader} from "@GameCore/Components/Common/ModelLoader";
+
 // ECS
 import SpacialHashGrid from "@EntityComponentCore/utils/SpacialHashGrid";
 
@@ -27,9 +25,6 @@ class GameEngine extends GameEnviornment {
     Init() {
         this._Initialize();
         this._Animate();
-        this._LoadProjectileMap();
-        this._LoadPlayer();
-        // this._SetGridHelper();
     }
 
     _LoadProjectileMap() {
@@ -37,7 +32,6 @@ class GameEngine extends GameEnviornment {
         const projectileMap = ProjectileMapEntity({
             scene: this._scene
         });   
-
         this._entityManager.Add(projectileMap, "ProjectileMap");
     }
 
@@ -77,15 +71,6 @@ class GameEngine extends GameEnviornment {
 
         this._entityManager.Add(player, "Player");
 
-        
-        new ModelLoader.StaticModelComponent({
-            scene: this._scene,
-            resourcePath: '/public/',
-            resourceName: 'scene.gltf',
-            scale: 1.135,
-            receiveShadow: true,
-            castShadow: true,
-        });
 
         // Create the npc character
         const npc = EnemyEntity({
@@ -96,13 +81,6 @@ class GameEngine extends GameEnviornment {
         this._entityManager.Add(npc, "NPC");
     }
 
-    _SetGridHelper() {
-        const size = 500;
-        const divisions = 500;
-        const gridHelper = new THREE.GridHelper( size, divisions );
-        gridHelper.position.y = -.5;
-        this._scene.add( gridHelper );
-    }
 }
 
 

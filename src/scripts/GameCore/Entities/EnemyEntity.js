@@ -55,7 +55,7 @@ export const EnemyEntity = (params) => {
         equip: true
     });  
 
-    Enemy.SetPosition(Math.random() * 5, 0, Math.random() * 7);
+    Enemy.SetPosition(Math.random() * 10, 0, Math.random() * 10);
     
     // Return the Enemy
     return Enemy;
